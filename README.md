@@ -17,6 +17,7 @@ You will need to install Node.js (https://nodejs.org/en/) and Postgres SQL; for 
 
 ## Run server.
 After setup, start command prompt/shell.
+
 1. Change into this directory (where this README.md is).
 2. If this is your first time running, run `npm install` first.
 3. Then enter `node .` to run the server. It will listen on port 80 (default). So you can use `http://localhost` in your web browser to view the web app.
