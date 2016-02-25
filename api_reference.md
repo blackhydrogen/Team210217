@@ -8,7 +8,7 @@ Response = Server to Client
 
 Template Code for request/response:
 
-```
+```javascript
 $.post({
 	url: "/requestUrl",
 	data: JSON.stringify({json: "object for request here"}),
@@ -29,7 +29,7 @@ $.post({
 
 For example, a possible code for login:
 
-```
+```javascript
 $.post({
 	url: "/login",
 	data: JSON.stringify({
