@@ -29,12 +29,24 @@ app.use(session(sessionOptions));
 // parse application/json
 app.use(bodyParser.json());
 
+// app.get("*", function(req, res, next) {
+	// next();
+// });
+
 app.get("/test", function(req, res) {
 	console.log(req.session);
 	// executeSQL("SELECT * from test1;", [], function(status) {
 		// res.send(JSON.stringify(status)).end();
 	// });
 	res.end("OK");
+});
+
+app.post("/login", function(req, res) {
+	console.log("here2", req.body);
+	// executeSQL("SELECT * from test1;", [], function(status) {
+		// res.send(JSON.stringify(status)).end();
+	// });
+	res.end(JSON.stringify({hello: "world"}));
 });
 
 app.use(express.static(__dirname + "/public_html"));
