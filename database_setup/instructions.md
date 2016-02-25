@@ -24,5 +24,5 @@
   4. You should see a row with name **letsfund** and owner as **letsfund**.
   5. Now type in `\dt`.
   6. You should see a table (under type) named **session**.
-  7. \q to quit psql.
+  7. `\q` to quit psql.
   8. You are done. Yay.
