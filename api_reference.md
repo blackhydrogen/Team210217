@@ -7,6 +7,7 @@ Response = Server to Client
 
 Template Code for request/response:
 
+```
 $.post({
 	url: "/requestUrl",
 	data: JSON.stringify({json: "object for request here"}),
@@ -21,11 +22,13 @@ $.post({
 	},
 	contentType: "application/json"
 });
+```
 
-### Example for Request/Response
+#### Example for Request/Response
 
 For example, a possible login:
 
+```
 $.post({
 	url: "/requestUrl",
 	data: JSON.stringify({
@@ -59,5 +62,4 @@ $.post({
 	},
 	contentType: "application/json"
 });
-
-===============================================================================
+```
