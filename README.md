@@ -13,7 +13,7 @@ Team Members:
 - Leon Chin
 
 ## Server setup.
-You will need to install Node.js (https://nodejs.org/en/) and Postgres SQL; for Postgres SQL, follow instructions.md in the `/database_setup` folder.
+You will need to install Node.js v5.7.0 or higher (https://nodejs.org/en/) and Postgres SQL; for Postgres SQL, follow instructions.md in the `/database_setup` folder.
 
 ## Run server.
 After setup, start command prompt/shell.
