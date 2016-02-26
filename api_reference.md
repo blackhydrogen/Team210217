@@ -88,6 +88,7 @@ Request:
 Response:
 ```
 {
+	// Note if the user entered wrong username/password, success will be false, with the reason in errorMessage
 	success: <boolean: true if the request was successfully completed, false otherwise>,
 	errorMessage: <string: error message if success == false>,
 	userType: <string: "patron", "entrepreneur" or "admin" only>
