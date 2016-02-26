@@ -212,3 +212,59 @@ Response:
 	]
 }
 ```
+
+
+#### List My Projects
+List the details of all projects belonging to the current entrepreneur. Available to entrepreneurs and admins.
+
+URL:
+```
+/listMyProjects
+```
+
+Request:
+```
+{
+	page: <number (int): the page number you want. Starts from 1 (page 1).
+	projectsPerPage: <number (int): OPTIONAL number of projects to send per page. If omitted, 10 is assumed.>
+	filters: { // OPTIONAL. If omitted it will assume no filters are used.
+		// TODO - add filter options
+	}
+}
+```
+
+Response:
+```
+{
+	success: <boolean: true if the request was successfully completed, false otherwise>,
+	errorMessage: <string: error message if success == false>,
+	currentPage: <number (int): current page number>
+	totalPage: <number (int): total number of pages>
+	projectsPerPage: <number (int): number of projects sent per page>
+	projects: [
+		{ //first project
+		title: <string: title of the project>,
+		description: <string: description of the project>,
+		goal: <number (float): goal/target amount to raise>,
+		raised: <number (float): amount raised thus far>,
+		start: <number (int): start time of the project, given by milliseconds since EPOCH>,
+		end: <number (int): end time of the project, given by milliseconds since EPOCH>,
+		tags: <string: comma-delimited list of tags (e.g. "charity, medical")>,
+		email: <string: email of the entrepreneur who is the owner of the project>,
+		name: <string: name of the entrepreneur who is the owner of the project>
+		},
+		{ //second project
+		title: <string: title of the project>,
+		description: <string: description of the project>,
+		goal: <number (float): goal/target amount to raise>,
+		raised: <number (float): amount raised thus far>,
+		start: <number (int): start time of the project, given by milliseconds since EPOCH>,
+		end: <number (int): end time of the project, given by milliseconds since EPOCH>,
+		tags: <string: comma-delimited list of tags (e.g. "charity, medical")>,
+		email: <string: email of the entrepreneur who is the owner of the project>,
+		name: <string: name of the entrepreneur who is the owner of the project>
+		},
+		... //and so on
+	]
+}
+```
