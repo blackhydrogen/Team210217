@@ -6,6 +6,7 @@ function loginFunction() {
             password: $("#password").val()
         }),
         success: function(data, response) {
+            console.log(data);
             if(response == "success") {
                 connectionSuccess(data);
             } else {
@@ -46,4 +47,4 @@ function userDoesNotExist() {
     
 }
 
-document.getElementById('loginButton').onclick = function() {loginFunction()};
+document.getElementById('loginButton').onclick = function() {loginFunction(); return false;};
