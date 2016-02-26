@@ -122,7 +122,7 @@ Response:
 	raised: <number (float): amount raised thus far>,
 	start: <number (int): start time of the project, given by milliseconds since EPOCH>,
 	end: <number (int): end time of the project, given by milliseconds since EPOCH>,
-	tags: [<string: tag1 of project>, <string: tag2 of project>, ...],
+	tags: <string: comma-delimited list of tags (e.g. "charity, medical")>,
 	email: <string: email of the entrepreneur who is the owner of the project>,
 	name: <string: name of the entrepreneur who is the owner of the project>	
 }
@@ -193,7 +193,7 @@ Response:
 		raised: <number (float): amount raised thus far>,
 		start: <number (int): start time of the project, given by milliseconds since EPOCH>,
 		end: <number (int): end time of the project, given by milliseconds since EPOCH>,
-		tags: [<string: tag1 of project>, <string: tag2 of project>, ...],
+		tags: <string: comma-delimited list of tags (e.g. "charity, medical")>,
 		email: <string: email of the entrepreneur who is the owner of the project>,
 		name: <string: name of the entrepreneur who is the owner of the project>
 		},
@@ -204,7 +204,7 @@ Response:
 		raised: <number (float): amount raised thus far>,
 		start: <number (int): start time of the project, given by milliseconds since EPOCH>,
 		end: <number (int): end time of the project, given by milliseconds since EPOCH>,
-		tags: [<string: tag1 of project>, <string: tag2 of project>, ...],
+		tags: <string: comma-delimited list of tags (e.g. "charity, medical")>,
 		email: <string: email of the entrepreneur who is the owner of the project>,
 		name: <string: name of the entrepreneur who is the owner of the project>
 		},
