@@ -8,7 +8,7 @@
   3. Type the following command: `createuser -d -P -U postgres letsfund`. (**postgres** is the default superuser username. Replace it accordingly, if needed.)
   4. It will prompt you for a password for the new role **letsfund**. Enter **gofundyourself** as password (then again to confirm).
   5. It will then prompt you for **postgres**'s password. Enter it (what you set in step 1).
-  6. It should exit with no errors. Don't close the command prompt/shell.
+  6. It should exit with no errors. Don't close the command prompt/shell.  
 3. Now we create a new database called **letsfund** (confusing, I know)
   1. In the same command prompt/shell from previous step, type in `psql -U letsfund -d postgres -a -f C:\path\to\script0.sql`.
   2. Enter **gofundyourself** as the password.
@@ -25,4 +25,8 @@
   5. Now type in `\dt`.
   6. You should see a table (under type) named **session**.
   7. `\q` to quit psql.
-  8. You are done. Yay.
+6. Now we need to run some preprocessing script (in preparation for our app actual schema). To run this, root access is required.
+  1. Type in `psql -U postgres -a -f C:\path\to\extension.sql`. (**postgres** is the default superuser username. Replace it accordingly, if needed.)
+7. Now we can run the schema script.
+  1. Type in `psql -U letsfund -a -f C:\path\to\schema.sql`.
+8. To clean the recently added schema, type in `psql -U letsfund -a -f C:\path\to\clean.sql`.
