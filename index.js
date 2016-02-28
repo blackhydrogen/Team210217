@@ -19,7 +19,7 @@ var httpPort = 80;
 var dbConnectionString = "postgres://letsfund:gofundyourself@localhost:5432/letsfund";
 
 var sessionOptions = {
-	secret: "6fc3119ef5e082356d613012d756dad102beb5e5", //sessionSecret+SALT
+	secret: "6fc3119ef5e082356d613012d756dad102beb5e5", //"sessionSecret" + SALT
 	resave: true,
 	saveUninitialized: false,
 	store: new postgreSqlStore({ conString: "postgres://letsfund:gofundyourself@localhost:5432/letsfund" })

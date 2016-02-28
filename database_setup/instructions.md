@@ -25,8 +25,9 @@
   5. Now type in `\dt`.
   6. You should see a table (under type) named **session**.
   7. `\q` to quit psql.
-6. Now we need to run some preprocessing script (in preparation for our app actual schema). To run this, root access is required.
-  1. Type in `psql -U postgres -a -f C:\path\to\extension.sql`. (**postgres** is the default superuser username. Replace it accordingly, if needed.)
+6. Now we need to run some preprocessing script (in preparation for our app actual schema). To run this, root access (i.e. run as p**ostgres**) is required.
+  1. Type in `psql -U postgres -d letsfund -a -f C:\path\to\extension.sql`. (**postgres** is the default superuser username. Replace it accordingly, if needed.)
+  2. Enter the password for **postgress** (step 1's password).
 7. Now we can run the schema script.
   1. Type in `psql -U letsfund -a -f C:\path\to\schema.sql`.
 8. To clean the recently added schema, type in `psql -U letsfund -a -f C:\path\to\clean.sql`.
