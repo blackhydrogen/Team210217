@@ -27,7 +27,13 @@
   7. `\q` to quit psql.
 6. Now we need to run some preprocessing script (in preparation for our app actual schema). To run this, root access (i.e. run as p**ostgres**) is required.
   1. Type in `psql -U postgres -d letsfund -a -f C:\path\to\extension.sql`. (**postgres** is the default superuser username. Replace it accordingly, if needed.)
-  2. Enter the password for **postgress** (step 1's password).
+  2. Enter the password for **postgres** (step 1's password).
 7. Now we can run the schema script.
   1. Type in `psql -U letsfund -a -f C:\path\to\schema.sql`.
-8. To clean the recently added schema, type in `psql -U letsfund -a -f C:\path\to\clean.sql`.
+  2. Enter **gofundyourself** as the password.
+8. To check if you have done steps 7 and 8 properly, type in `psql -U letsfund`, and login with **gofundyourself**.
+  1. In psql, type in `\dt`.
+  2. You should see 9 tables. They are account, admin, entrepreneur, patron, project, refund, session, tag, transaction.
+9. To clean the recently added schema, type in `psql -U letsfund -a -f C:\path\to\clean.sql`.
+  1. Enter **gofundyourself** as the password.
+  2. All tables except session should be dropped. (Left 1 table, which is session.)
