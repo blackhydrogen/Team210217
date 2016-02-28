@@ -24,7 +24,7 @@ function connectionSuccess(data) {
         if(serverResponse.userType == "patron") {
             
         } else if(serverResponse.userType == "entrepreneur") {
-            
+            window.location.href = "/secure/entrepreneur-dashboard.html";
         } else if(serverResponse.userType == "admin") {
             
         } else {
