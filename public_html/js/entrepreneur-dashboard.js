@@ -15,7 +15,6 @@ function getAllProjects(pageNumber) {
       page: pageNumber
     }),
     success: function (data, response) {
-      console.log(data);
       if (response == "success") {
         displayProjects(data);
       } else {
@@ -34,7 +33,7 @@ function displayProjects(data) {
     var totalPage = serverResponse.totalPage;
     var projects = serverResponse.projects;
 
-    var htmlToBeDisplayed = formatHtml(projects);
+    var htmlToBeDisplayed = formatHtml(currentPage, projects);
     var paginationHTML = createPaginationHTML(currentPage, totalPage);
     
     document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
@@ -49,15 +48,14 @@ function connectionError(response) {
   console.log(response);
 }
 
-function formatHtml(projects) {
+function formatHtml(currPage, projects) {
   if (projects.length == 0) {
     displayNoProjects();
   } else {
     var entireHTML = "";
     
     for (var i = 0; i < projects.length; i++) {
-      var projectID = projects[i].title + projects[i].email;
-      var html = createItemHtml(projectID, projects[i]);
+      var html = createItemHtml(currPage, i, projects[i]);
       
       entireHTML = entireHTML + html;
     }
@@ -66,7 +64,7 @@ function formatHtml(projects) {
   return entireHTML;
 }
 
-function createItemHtml(projectID, project) {
+function createItemHtml(page, itemNo, project) {
   var html = `<div class="row">
             <div class="col-md-7">
                 <a href="portfolio-item.html">
@@ -77,13 +75,13 @@ function createItemHtml(projectID, project) {
                 <h3>` + project.title + `</h3>
                 <h4>Goal: ` + project.raised + ` / ` + project.goal + `</h4>
                 <p>` + project.description + `</p>
-                <a class="btn btn-primary" onclick=goToProject(` + projectID + `)>View Project</i></a>
+                <a class="btn btn-primary" onclick="goToProject('` + project.title + `', '` + project.email + `')">View Project</i></a>
             </div>
         </div><hr>`;
   return html;
 }
 
-
+  
 
 function createPaginationHTML(currPage, totPage){
   if(totPage < 5) {
@@ -111,10 +109,8 @@ function createPaginationHTML(currPage, totPage){
                     </li>`
       }
       
-      console.log(totPage);
       var centre = "";
       for(var i = 1; i <= totPage; i++) {
-        var active = "";
         if(i == currPage) {
           centre = centre + `<li class="active">
                         <a>` + i + `</a>
@@ -140,8 +136,14 @@ function displayNoProjects() {
 
 }
 
-function goToProject(projectID) {
-  var projectArray = projectID.split("-");
-  var title = projectArray[0];
-  var email = projectArray[1];
+function goToProject(title, email) {
+  console.log(title);
+  console.log(email);
+  var params = "title=" + title + "&email=" + email;
+  
+  var html = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
+  console.log(html);
+  console.log(decodeURIComponent(html));
+  
+  window.location.href = html;
 }
