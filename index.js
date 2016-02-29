@@ -101,69 +101,13 @@ app.post("/login", function(req, res) {
 
 app.post("/getProjectDetails", function(req, res) {
 	var requestObject = req.body;
-	var responseObject = {};
 	
 	if(!requestObjectIsValid(requestObject))
 		return;
 	
-	responseObject.title = requestObject.title;
-	responseObject.email = requestObject.email;
-	
-	responseObject.raised = 0; //TODO - temp value.
-	
-	var collectCount = 3;
-	function collect() {
-		collectCount--;
-		if(collectCount == 0)
-			sendResponse(res, responseObject);
-	}
-	
-	executeSQL(
-		"SELECT * FROM project WHERE email=$1 AND title=$2",
-		[requestObject.email, requestObject.title],
-		function(status) {
-			if(status.result.rowCount != 1) {
-				sendError(res, "Project not found.");
-				return;
-			}
-			
-			var sqlRow = status.result.rows[0];
-			
-			responseObject.description = sqlRow.description;
-			responseObject.goal = sqlRow.goal;
-			responseObject.start = sqlRow.start_time;
-			responseObject.end = sqlRow.end_time;
-			
-			collect();
-		}
-	);
-	
-	executeSQL(
-		"SELECT * FROM tag WHERE email=$1 AND title=$2",
-		[requestObject.email, requestObject.title],
-		function(status) {
-			responseObject.tags = "";
-			
-			if(status.result.rows.length >= 1) {
-				responseObject.tags = status.result.rows[0].name;
-			}
-			
-			for(var i = 1; i < status.result.rows.length; i++) {	
-				responseObject.tags += ", " + status.result.rows[i].name;
-			}
-			
-			collect();
-		}
-	);
-	
-	executeSQL(
-		"SELECT name FROM entrepreneur WHERE email=$1",
-		[requestObject.email],
-		function(status) {
-			responseObject.name = status.result.rows[0].name;
-			collect();
-		}
-	);
+	getProject(requestObject, function(responseObject) {
+		sendResponse(res, responseObject);
+	});
 });
 
 app.post("/updateProjectDetails", function(req, res) {
@@ -172,8 +116,6 @@ app.post("/updateProjectDetails", function(req, res) {
 	
 	if(!requestObjectIsValid(requestObject))
 		return;
-	
-	console.log(requestObject);
 	
 	if(requestObject.title
 		&& requestObject.description
@@ -220,15 +162,14 @@ app.post("/updateProjectDetails", function(req, res) {
 					requestObject.title,
 					requestObject.email,
 					requestObject.goal,
-					requestObject.start,
-					requestObject.end,
+					new Date(requestObject.start),
+					new Date(requestObject.end),
 					requestObject.description,
 					requestObject.identifyingTitle,
 					requestObject.email
 				],
 				function(status) {
 					//TODO check if ok
-					console.log(status.errorMessage);
 					insertTags();
 				}
 			);
@@ -290,35 +231,40 @@ app.post("/listMyProjects", function(req, res) {
 	if(!requestObjectIsValid(requestObject))
 		return;
 	
+	var session = {
+		email: "test@gmail.com" //TODO get from session
+	};
+	
 	responseObject.currentPage = 1;
 	responseObject.totalPage = 1;
 	responseObject.projectsPerPage = 10;
-	responseObject.projects = [
-		{
-			title: "Test Project 1",
-			description: "Test Project 1 description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-			goal: 10000.0,
-			raised: 150.26,
-			start: new Date("26 Feb 2016 23:59:00 GMT+0800").getTime(),
-			end: new Date("15 Mar 2016 10:00:00 GMT+0800").getTime(),
-			tags: "test, project, testproject",
-			email: "test@gmail.com",
-			name: "Atul NK"
-		}, 
-		{
-			title: "Test Project 1 Again",
-			description: "Test Project 1 Again description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-			goal: 10001.0,
-			raised: 151.26,
-			start: new Date("27 Feb 2016 23:59:00 GMT+0800").getTime(),
-			end: new Date("16 Mar 2016 10:00:00 GMT+0800").getTime(),
-			tags: "test, project, testproject, again",
-			email: "test2@gmail.com",
-			name: "Ivan Tj"
-		}
-	];
+	responseObject.projects = [];
 	
-	sendResponse(res, responseObject);
+	var collectCount = 0;
+	function collect() {
+		collectCount--;
+		if(collectCount == 0) {
+			sendResponse(res, responseObject);
+		}
+	}
+	
+	executeSQL(
+		"SELECT title FROM project WHERE email=$1;",
+		[session.email], 
+		function(status) {
+			collectCount = status.result.rows.length;
+			
+			for(var i = 0; i < status.result.rows.length; i++) {
+				getProject({
+					title: status.result.rows[i].title,
+					email: session.email
+				}, function(obj) {
+					responseObject.projects.push(obj);
+					collect();
+				});
+			}
+		}
+	);
 });
 
 app.use(express.static(__dirname + "/public_html"));
@@ -337,6 +283,69 @@ function generateRandomAsciiString(length) {
 		);
 	}
 	return str;
+}
+
+function getProject(requestObject, callback) {
+	var responseObject = {};
+	
+	responseObject.title = requestObject.title;
+	responseObject.email = requestObject.email;
+	
+	responseObject.raised = 0; //TODO - temp value.
+	
+	var collectCount = 3;
+	function collect() {
+		collectCount--;
+		if(collectCount == 0)
+			callback(responseObject);
+	}
+	
+	executeSQL(
+		"SELECT * FROM project WHERE email=$1 AND title=$2",
+		[requestObject.email, requestObject.title],
+		function(status) {
+			if(status.result.rowCount != 1) {
+				sendError(res, "Project not found.");
+				return;
+			}
+			
+			var sqlRow = status.result.rows[0];
+			
+			responseObject.description = sqlRow.description;
+			responseObject.goal = sqlRow.goal;
+			responseObject.start = sqlRow.start_time;
+			responseObject.end = sqlRow.end_time;
+			
+			collect();
+		}
+	);
+	
+	executeSQL(
+		"SELECT * FROM tag WHERE email=$1 AND title=$2",
+		[requestObject.email, requestObject.title],
+		function(status) {
+			responseObject.tags = "";
+			
+			if(status.result.rows.length >= 1) {
+				responseObject.tags = status.result.rows[0].name;
+			}
+			
+			for(var i = 1; i < status.result.rows.length; i++) {	
+				responseObject.tags += ", " + status.result.rows[i].name;
+			}
+			
+			collect();
+		}
+	);
+	
+	executeSQL(
+		"SELECT name FROM entrepreneur WHERE email=$1",
+		[requestObject.email],
+		function(status) {
+			responseObject.name = status.result.rows[0].name;
+			collect();
+		}
+	);
 }
 
 function requestObjectIsValid(res, requestObject) {
