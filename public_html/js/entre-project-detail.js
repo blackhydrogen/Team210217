@@ -14,7 +14,6 @@ function getUrlParameters(parameter, staticURL, decode) {
         parArr = decodeURIComponent(currLocation).split("?")[1].split("&"),
         returnBool = true;
         
-        console.log(parArr);
     for (var i = 0; i < parArr.length; i++) {
 
         var parr = parArr[i].split("=");
@@ -32,8 +31,6 @@ function getUrlParameters(parameter, staticURL, decode) {
 function getProjectDetails() {
     var title = getUrlParameters("title", "", true);
     var email = getUrlParameters("email", "", true);
-    console.log(title);
-    console.log(email);
 
     $.post({
         url: "/getProjectDetails",
@@ -55,6 +52,23 @@ function getProjectDetails() {
 
 function displayProject(data) {
     var response = JSON.parse(data);
+	
+	if(response.success) {
+		$(".lf-title").html(response.title);
+		$(".lf-description").html(response.description);
+		$(".lf-details").html(`
+			<li>Goal: ${response.goal}</li>
+			<li>Raised: ${response.raised}</li>
+			<li>Start Time: ${new Date(response.start).toLocaleString()}</li>
+			<li>End Time: ${new Date(response.end).toLocaleString()}</li>
+			<li>Tags: ${response.tags}</li>
+		`)
+	}
+	else {
+		alert(response.errorMessage);
+	}
 }
 
-getProjectDetails();
+function loadEditPage() {
+	window.location.href = "/secure/entre-project-detail-edit.html" + window.location.search;
+}
