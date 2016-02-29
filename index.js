@@ -19,7 +19,7 @@ var httpPort = 80;
 var dbConnectionString = "postgres://letsfund:gofundyourself@localhost:5432/letsfund";
 
 var sessionOptions = {
-	secret: "6fc3119ef5e082356d613012d756dad102beb5e5", //sessionSecret+SALT
+	secret: "6fc3119ef5e082356d613012d756dad102beb5e5", //"sessionSecret" + SALT
 	resave: true,
 	saveUninitialized: false,
 	store: new postgreSqlStore({ conString: "postgres://letsfund:gofundyourself@localhost:5432/letsfund" })
@@ -189,6 +189,18 @@ app.use(express.static(__dirname + "/public_html"));
 server.listen(httpPort, function() {
 	console.log("Listening on *:" + httpPort);
 });
+
+// Generates a random string using all printable characters of
+// ASCII (32_decimal " " to 126_decimal "~")
+function generateRandomAsciiString(length) {
+	var str = "";
+	for(var i = 0; i < length; i++) {
+		str += String.fromCharCode(
+			Math.floor(Math.random() * 95) + 32
+		);
+	}
+	return str;
+}
 
 function requestObjectIsValid(res, requestObject) {
 	if(!requestObject instanceof Object) {
