@@ -190,6 +190,18 @@ server.listen(httpPort, function() {
 	console.log("Listening on *:" + httpPort);
 });
 
+// Generates a random string using all printable characters of
+// ASCII (32_decimal " " to 126_decimal "~")
+function generateRandomAsciiString(length) {
+	var str = "";
+	for(var i = 0; i < length; i++) {
+		str += String.fromCharCode(
+			Math.floor(Math.random() * 95) + 32
+		);
+	}
+	return str;
+}
+
 function requestObjectIsValid(res, requestObject) {
 	if(!requestObject instanceof Object) {
 		sendError(res, "Invalid request.");
