@@ -4,8 +4,8 @@ CREATE TABLE account (
 	email citext PRIMARY KEY,
 	-- http://stackoverflow.com/questions/1200326/what-is-the-datatype-for-a-password-in-postgresql
 	salt CHAR(64) NOT NULL, -- Lets use 64 random characters. Using ASCII's 95 printable characters, that's 95^64 possible combinations.
-	passhash CHAR(40) NOT NULL, -- SHA1 algorithm. Always 40 characters (20 bytes in 40 HEX characters).
-	type VARCHAR(16) CHECK(type = 'admin' OR type = 'entrepreneur' OR type = 'patron') 
+	hash CHAR(40) NOT NULL, -- SHA1 algorithm. Always 40 characters (20 bytes in 40 HEX characters).
+	type VARCHAR(16) NOT NULL CHECK(type = 'admin' OR type = 'entrepreneur' OR type = 'patron') 
 );
 
 -- TO BE VERIFIED: password hash is not needed anymore because user authentication is done by 'account' table
