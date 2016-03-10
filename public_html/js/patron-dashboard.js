@@ -150,7 +150,7 @@ function goToProject(title, email) {
   console.log(email);
   var params = "title=" + title + "&email=" + email;
 
-  var html = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
+  var html = "/secure/patron-project-detail.html?" + encodeURIComponent(params);
   console.log(html);
   console.log(decodeURIComponent(html));
 
