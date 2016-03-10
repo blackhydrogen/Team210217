@@ -54,10 +54,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">Edit Profile</a>
+                                <a href="#" onclick="edit-profile-patron.html">Edit Profile</a>
                             </li>
                             <li>
-                                <a href="#">Logout</a>
+                                <a href="#" onclick="logout()">Logout</a>
                             </li>
 
                         </ul>
@@ -89,11 +89,11 @@
         <!-- /.row -->
 
         <!-- Projects Row -->
-        <div class="row">
-          <div id="projectBody"></div>
-        </div>
+
+        <div id="projectBody"></div>
+
         <!-- /.row -->
-        <hr>
+        
 
         <!-- Pagination -->
         <div class="row text-center">
@@ -124,6 +124,7 @@
 
     <!-- personal js -->
     <script src="/js/patron-dashboard.js"></script>
+    <script src="/js/utils.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/js/bootstrap.min.js"></script>
