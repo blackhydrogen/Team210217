@@ -10,7 +10,7 @@ function runOnLoad() {
 
 function getAllProjects(pageNumber) {
   $.post({
-    url: "/listProjects",
+    url: "/listMyProjects",
     data: JSON.stringify({
       page: pageNumber
     }),
@@ -55,7 +55,7 @@ function formatHtml(currPage, projects) {
     var entireHTML = "";
 
     for (var i = 0; i < projects.length; i++) {
-      var html = createItemHtml(currPage, i, projects[i]);
+      var html = createItemHtml(currPage, projects[i]);
 
       entireHTML = entireHTML + html;
     }
@@ -64,7 +64,7 @@ function formatHtml(currPage, projects) {
   return entireHTML;
 }
 
-function createItemHtml(page, itemNo, project) {
+function createItemHtml(page, project) {
   var description = project.description;
   if(description.length > 400) {
     description = description.substring(0, 399);
@@ -87,7 +87,7 @@ function createItemHtml(page, itemNo, project) {
   return html;
 }
 
-function createPaginationHTML(currPage, totPage){
+function createPaginationHTML(currPage, totPage) {
   var leftStr = "";
   var rightStr = "";
   var centre = "";
@@ -144,13 +144,9 @@ function displayNoProjects() {
 }
 
 function goToProject(title, email) {
-  console.log(title);
-  console.log(email);
   var params = "title=" + title + "&email=" + email;
 
   var html = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
-  console.log(html);
-  console.log(decodeURIComponent(html));
 
   window.location.href = html;
 }

@@ -58,5 +58,3 @@ function invalidUserError() {
   .append("Invalid username/password");
   $("#password").val("");
 }
-
-// document.getElementById('loginButton').onclick = function() {loginFunction(); return false;};
