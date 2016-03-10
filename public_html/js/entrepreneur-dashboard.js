@@ -10,7 +10,7 @@ function runOnLoad() {
 
 function getAllProjects(pageNumber) {
   $.post({
-    url: "/listMyProjects",
+    url: "/listProjects",
     data: JSON.stringify({
       page: pageNumber
     }),
@@ -65,6 +65,12 @@ function formatHtml(currPage, projects) {
 }
 
 function createItemHtml(page, itemNo, project) {
+  var description = project.description;
+  if(description.length > 400) {
+    description = description.substring(0, 399);
+    description = description + "...";
+  }
+
   var html = `<div class="row">
             <div class="col-md-7">
                 <a href="portfolio-item.html">
@@ -74,7 +80,7 @@ function createItemHtml(page, itemNo, project) {
             <div class="col-md-5">
                 <h3>` + project.title + `</h3>
                 <h4>Goal: ` + project.raised + ` / ` + project.goal + `</h4>
-                <p>` + project.description + `</p>
+                <p>` + description + `</p>
                 <a class="btn btn-primary" onclick="goToProject('` + project.title + `', '` + project.email + `')">View Project</i></a>
             </div>
         </div><hr>`;
