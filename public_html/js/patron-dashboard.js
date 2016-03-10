@@ -58,7 +58,7 @@ function formatHtml(currPage, projects) {
       var html = createItemHtml(currPage, i, projects[i]);
       var html2 = createItemHtml(currPage, i, projects[i+1]);
 
-      entireHTML = entireHTML + html + html2;
+      entireHTML = entireHTML + `<div class="row">` + html + html2 + `</div><hr>`;
     }
   }
 
@@ -66,16 +66,20 @@ function formatHtml(currPage, projects) {
 }
 
 function createItemHtml(page, itemNo, project) {
+  var projectDesc = project.description;
+  if(projectDesc.length > 50){
+    projectDesc = project.description.substring(0, 49) + `...`;
+  }
   var html =
-            `<div class="col-md-4">
+            `<div class="col-md-3">
                 <a href="portfolio-item.html">
                     <img class="img-responsive img-hover" src="http://placehold.it/700x300" alt="">
                 </a>
             </div>
-            <div class="col-md-2">
-                <h3>` + project.title + `</h3>
-                <h4>Goal: ` + project.raised + ` / ` + project.goal + `</h4>
-                <p>` + project.description.substring(0, 50) + `... </p>
+            <div class="col-md-3">
+                <h4>` + project.title + `</h4>
+                <h5>Goal: ` + project.raised + ` / ` + project.goal + `</h5>
+                <p>` + projectDesc + `</p>
                 <a class="btn btn-primary" onclick="goToProject('` + project.title + `', '` + project.email + `')">View Project</i></a>
             </div>`;
 
