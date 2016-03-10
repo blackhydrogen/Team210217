@@ -54,10 +54,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">Edit Profile</a>
+                                <a href="edit-profile-entre.html">Edit Profile</a>
                             </li>
                             <li>
-                                <a href="#">Logout</a>
+                                <a href="#" onclick="logout()">Logout</a>
                             </li>
                         </ul>
                     </li>
@@ -74,9 +74,7 @@
         <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Project Details
-                    <small>(In-depth look at your project)</small>
-                </h1>
+                <h1 class="page-header"></h1>
                 <ol class="breadcrumb">
                     <li><a href="entrepreneur-dashboard.html">My Projects</a>
                     </li>
@@ -122,20 +120,18 @@
             </div>
 
             <div class="col-md-4">
-                <h3><span class="lf-title">Loading...</span></h3>
                 <p><span class="lf-description">Loading...</span></p>
                 <h3>Project Details</h3>
                 <ul class="lf-details">
                     <li>Loading...</li>
                 </ul>
-				<input type="button" value="Edit" onclick="loadEditPage()">
             </div>
-
+            <button type="button" class="btn btn-primary" onclick="loadEditPage()">Edit</button>
         </div>
         <!-- /.row -->
 
         <!-- Related Projects Row -->
-        <div class="row">
+        <!-- <div class="row">
 
             <div class="col-lg-12">
                 <h3 class="page-header">Related Projects</h3>
@@ -165,7 +161,7 @@
                 </a>
             </div>
 
-        </div>
+        </div> -->
         <!-- /.row -->
 
         <hr>
@@ -187,7 +183,8 @@
 
     <!--script for this page-->
     <script src="/js/entre-project-detail.js"></script>
-    
+    <script src="/js/utils.js"></script>
+
     <!-- Bootstrap Core JavaScript -->
     <script src="/js/bootstrap.min.js"></script>
 
