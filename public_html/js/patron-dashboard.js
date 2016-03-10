@@ -85,50 +85,54 @@ function createItemHtml(page, itemNo, project) {
 
 
 function createPaginationHTML(currPage, totPage){
-  if(totPage < 5) {
-    for(var i = 0; i < totPage; i++) {
-      var leftStr = "";
-      var rightStr = "";
+  var leftStr = "";
+  var rightStr = "";
+  var centre = "";
 
-      if(currPage == 1) {
-        leftStr = `<li>
-                        <a href="#">&laquo;</a>
-                    </li>`
-      } else {
-        leftStr = `<li>
-                        <a href="#" onclick=getAllProjects(`+ (currPage - 1) + `)>&laquo;</a>
-                    </li>`
-      }
+  if(currPage > 1) {
+    leftStr = `<li>
+                    <a href="#" onclick=getAllProjects(`+ (currPage - 1) + `)>&laquo;</a>
+                </li>`;
+  }
 
-      if(totPage == currPage) {
-        rightStr = `<li>
-                        <a href="#">&raquo;</a>
-                    </li>`
-      } else {
-        rightStr = `<li>
-                        <a href="#" onclick=getAllProjects(`+ (currPage + 1) + `)>&laquo;</a>
-                    </li>`
-      }
+  if(currPage < totPage) {
+    rightStr = `<li>
+                    <a href="#" onclick=getAllProjects(`+ (currPage + 1) + `)>&laquo;</a>
+                </li>`;
+  }
 
-      var centre = "";
-      for(var i = 1; i <= totPage; i++) {
-        if(i == currPage) {
-          centre = centre + `<li class="active">
-                        <a>` + i + `</a>
-                    </li>`
-        } else {
-          centre = centre + `<li>
-                          <a href="#" onclick=getAllProjects(` + i + `)>` + i + `</a>
-                      </li>`
-        }
-      }
-
-      return leftStr + centre + rightStr;
+  if(totPage <= 5) {
+    for (var i = 1; i <= totPage; i++) {
+      centre = centre + createPageNumberHTML(i, currPage);
     }
   } else {
-    if(currPage >= 3) {
-
+    if(currPage <= 3) {
+      for (var i = 1; i <= 5; i++) {
+        centre = centre + createPageNumberHTML(i, currPage);
+      }
+    } else if(currPage > 3 && currPage + 2 < totPage) {
+      for(var i = currPage - 2; i <= currPage + 2; i++) {
+        centre = centre + createPageNumberHTML(i, currPage)
+      }
+    } else {
+      for(var i = totPage - 4; i <= totPage; i++) {
+        centre = centre + createPageNumberHTML(i, currPage);
+      }
     }
+  }
+
+  return leftStr + centre + rightStr;
+}
+
+function createPageNumberHTML(iter, currPage) {
+  if(iter == currPage) {
+    return `<li class="active">
+                <a>` + iter + `</a>
+            </li>`;
+  } else {
+    return `<li>
+                <a href="#" onclick=getAllProjects(` + iter + `)>` + iter + `</a>
+            </li>`;
   }
 }
 
