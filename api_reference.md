@@ -362,7 +362,6 @@ Request:
 	end: <number (int): end time of the project, given by milliseconds since EPOCH>,
 	description: <string: description of the project>,
 	goal: <number (float): goal/target amount to raise>,
-	raised: <number (float): amount raised thus far>,
 	tags: <string: comma-delimited list of tags (e.g. "charity, medical")>,
 }
 ```
