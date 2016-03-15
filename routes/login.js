@@ -5,10 +5,16 @@ var lfHash = require("../lfHash");
 var requestObject;
 var responseObject = {};
 
+var req;
+var res;
+
 var email;
 var password;
 
-function handler(req, res) {
+function handler(reql, resl) {
+	req = reql;
+	res = resl;
+	
 	requestObject = req.body;
 	
 	if(!lfTools.requestObjectIsValid(requestObject))
@@ -32,9 +38,9 @@ function checkHash(status) {
 	
 	var salt = status.result.rows[0].salt;
 	var prehash = email+password+salt;
-	var hash = lfHash.getHashWithoutSalt(prehash);
+	var hash = lfHash.getHash(prehash);
 			
-	executeSQL(
+	lfDatabase.executeSQL(
 		"SELECT type FROM account WHERE email=$1 AND hash=$2",
 		[email, hash],
 		function(status) {
@@ -44,6 +50,7 @@ function checkHash(status) {
 			}
 				
 			responseObject.userType = status.result.rows[0].type;
+			req.session.email = email;
 			lfTools.sendResponse(res, responseObject);
 		}
 	);

@@ -16,9 +16,10 @@ lfDatabase.setup("postgres://letsfund:gofundyourself@localhost:5432/letsfund");
 lfSession.setup(app);
 lfRoutes.setup(app);
 
-// app.get("*", function(req, res, next) {
-	// next();
-// });
+app.get("*", function(req, res, next) {
+	console.log(req.session);
+	next();
+});
 
 // app.get("/test", function(req, res) {
 	// console.log(req.session);

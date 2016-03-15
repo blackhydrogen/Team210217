@@ -26,14 +26,18 @@ the `.js` file as `<route_name>.js`.
 
 ```javascript
 var lfDatabase = require("../lfDatabase");
-var lfSession = require("../lfSession");
 var lfTools = require("../lfTools");
 var lfHash = require("../lfHash");
+
+var req;
+var res;
 
 var requestObject;
 var responseObject = {};
 
-function handler(req, res) {
+function handler(reql, resl) {
+	req = reql;
+	res = resl;
 	requestObject = req.body;
 	
 	if(!lfTools.requestObjectIsValid(requestObject))

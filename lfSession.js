@@ -12,10 +12,11 @@ function setup(app) {
 	}
 	
 	var sessionOptions = {
-		secret: lfHash.getHash("sessionSecret"),
-		resave: true,
+		secret: lfHash.getHashWithGlobalSalt("sessionSecret"),
+		resave: false,
 		saveUninitialized: false,
-		store: new postgreSqlStore({ conString: lfDatabase.getDatabaseConnectionString() })
+		store: new postgreSqlStore({ conString: lfDatabase.getDatabaseConnectionString() }),
+		cookie: { maxAge: 1 * 24 * 60 * 60 * 1000 } // 1 day
 	};
 	
 	app.use(session(sessionOptions));

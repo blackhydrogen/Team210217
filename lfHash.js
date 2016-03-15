@@ -7,13 +7,12 @@ var sha1 = require("sha1");
 
 var globalSalt = "fundmenowthankyouverymuchpleasedonothackhahahahahahahaha";
 
-// Automatically hashes with the global salt. Use getHashWithoutSalt(string) for normal (i.e. unsalted) hashing.
 function getHash(string) {
-	return sha1(string + globalSalt);
+	return sha1(string);
 }
 
-function getHashWithoutSalt(string) {
-	return sha1(string);
+function getHashWithGlobalSalt(string) {
+	return sha1(string + globalSalt);
 }
 
 // Generates a random string using all printable characters of
@@ -30,6 +29,6 @@ function generateRandomSalt(length) {
 
 module.exports = {
 	getHash: getHash,
-	getHashWithoutSalt: getHashWithoutSalt,
+	getHashWithGlobalSalt: getHashWithGlobalSalt,
 	generateRandomSalt: generateRandomSalt
 };
