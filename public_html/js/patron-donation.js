@@ -5,18 +5,18 @@
 
 
 function runOnLoad() {
-  getAllProjects(1);
+  getTransactionHist();
 }
 
-function getAllProjects(pageNumber) {
+function getTransactionHist() {
   $.post({
-    url: "/listMyProjects",
+    url: "/getUserTransactionHistory",
     data: JSON.stringify({
-      page: pageNumber
+
     }),
     success: function (data, response) {
       if (response == "success") {
-        displayProjects(data);
+        displayTransactionHist(data);
       } else {
         connectionError(response);
       }
@@ -25,18 +25,16 @@ function getAllProjects(pageNumber) {
   });
 }
 
-function displayProjects(data) {
+function displayTransactionHist(data) {
   var serverResponse = JSON.parse(data);
 
   if (serverResponse.success == true) {
-    var currentPage = serverResponse.currentPage;
-    var totalPage = serverResponse.totalPage;
-    var projects = serverResponse.projects;
+    var title = serverResponse.title;
+    var transaction = serverResponse.transaction;
 
-    var htmlToBeDisplayed = formatHtml(currentPage, projects);
-    var paginationHTML = createPaginationHTML(currentPage, totalPage);
+    var htmlToBeDisplayed = formatHtml(transaction);
 
-    document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
+    document.getElementById("transactionBody").innerHTML = htmlToBeDisplayed;
     document.getElementById("pageHTML").innerHTML = paginationHTML;
 
   } else {
@@ -48,14 +46,14 @@ function connectionError(response) {
   console.log(response);
 }
 
-function formatHtml(currPage, projects) {
-  if (projects.length == 0) {
-    displayNoProjects();
+function formatHtml(transaction) {
+  if (transaction.length == 0) {
+    return displayNoTransaction();
   } else {
     var entireHTML = "";
 
-    for (var i = 0; i < projects.length; i++) {
-      var html = createItemHtml(currPage, projects[i]);
+    for (var i = 0; i < transaction.length; i++) {
+      var html = createItemHtml(transaction[i]);
 
       entireHTML = entireHTML + html;
     }
@@ -64,83 +62,30 @@ function formatHtml(currPage, projects) {
   return entireHTML;
 }
 
-function createItemHtml(page, project) {
-  var description = project.description;
-  if(description.length > 400) {
-    description = description.substring(0, 399);
-    description = description + "...";
-  }
+function createItemHtml(transaction) {
+  var title = transaction.title;
+  var email = transaction.email;
+  var date = transaction.date;
+  var amount = transaction.amount;
 
   var html = `<div class="row">
-            <div class="col-md-7">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-hover" src="http://placehold.it/700x300" alt="">
-                </a>
-            </div>
-            <div class="col-md-5">
-                <h3>` + project.title + `</h3>
-                <h4>Goal: ` + project.raised + ` / ` + project.goal + `</h4>
-                <p>` + description + `</p>
-                <a class="btn btn-primary" onclick="goToProject('` + project.title + `', '` + project.email + `')">View Project</i></a>
+
+            <div class="col-md-12">
+                <h3>` + transaction.title + `</h3>
+                <h4>Goal: ` + transaction.email `</h4>
+                <p>` + transaction.date + `</p><br>
+                <p>`+ transaction.amount` </p><br>
             </div>
         </div><hr>`;
   return html;
 }
 
-function createPaginationHTML(currPage, totPage) {
-  var leftStr = "";
-  var rightStr = "";
-  var centre = "";
+function displayNoTransaction() {
+    var html = `<div class="col-md-12" align="center">
+        YOU CURRENTLY HAVE 0 DONATIONS
+    </div>`;
 
-  if(currPage > 1) {
-    leftStr = `<li>
-                    <a href="#" onclick=getAllProjects(`+ (currPage - 1) + `)>&laquo;</a>
-                </li>`;
-  }
-
-  if(currPage < totPage) {
-    rightStr = `<li>
-                    <a href="#" onclick=getAllProjects(`+ (currPage + 1) + `)>&laquo;</a>
-                </li>`;
-  }
-
-  if(totPage <= 5) {
-    for (var i = 1; i <= totPage; i++) {
-      centre = centre + createPageNumberHTML(i, currPage);
-    }
-  } else {
-    if(currPage <= 3) {
-      for (var i = 1; i <= 5; i++) {
-        centre = centre + createPageNumberHTML(i, currPage);
-      }
-    } else if(currPage > 3 && currPage + 2 < totPage) {
-      for(var i = currPage - 2; i <= currPage + 2; i++) {
-        centre = centre + createPageNumberHTML(i, currPage)
-      }
-    } else {
-      for(var i = totPage - 4; i <= totPage; i++) {
-        centre = centre + createPageNumberHTML(i, currPage);
-      }
-    }
-  }
-
-  return leftStr + centre + rightStr;
-}
-
-function createPageNumberHTML(iter, currPage) {
-  if(iter == currPage) {
-    return `<li class="active">
-                <a>` + iter + `</a>
-            </li>`;
-  } else {
-    return `<li>
-                <a href="#" onclick=getAllProjects(` + iter + `)>` + iter + `</a>
-            </li>`;
-  }
-}
-
-function displayNoProjects() {
-
+    return html;
 }
 
 function goToProject(title, email) {
