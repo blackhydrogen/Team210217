@@ -11,7 +11,8 @@ CREATE TABLE account (
 -- TO BE VERIFIED: password hash is not needed anymore because user authentication is done by 'account' table
 -- Ian: Yes
 CREATE TABLE entrepreneur (
-	email citext PRIMARY KEY REFERENCES account(email),
+	email citext PRIMARY KEY REFERENCES account(email)
+		ON UPDATE CASCADE,
 	name TEXT NOT NULL,
 	website TEXT,
 	address TEXT,
@@ -20,19 +21,22 @@ CREATE TABLE entrepreneur (
 );
 
 CREATE TABLE admin (
-	email citext PRIMARY KEY REFERENCES account(email),
+	email citext PRIMARY KEY REFERENCES account(email)
+		ON UPDATE CASCADE,
 	name TEXT NOT NULL
 );
 
 CREATE TABLE patron (
-	email citext PRIMARY KEY REFERENCES account(email),
+	email citext PRIMARY KEY REFERENCES account(email)
+		ON UPDATE CASCADE,
 	name TEXT NOT NULL,
 	profile_pic_url VARCHAR(256)
 );
 
 CREATE TABLE project (
 	title TEXT,
-	email citext REFERENCES entrepreneur(email), -- removed ON DELETE CASCADE because it isn't used consistently (could be restored)
+	email citext REFERENCES entrepreneur(email)
+		ON UPDATE CASCADE, 
 	goal INT CHECK (goal > 0) NOT NULL,
 	start_time TIMESTAMP NOT NULL,
 	end_time TIMESTAMP NOT NULL,
@@ -45,18 +49,21 @@ CREATE TABLE tag (
 	name TEXT,
 	title TEXT,
 	email citext,
-	FOREIGN KEY (title, email) REFERENCES project(title, email),
+	FOREIGN KEY (title, email) REFERENCES project(title, email)
+		ON UPDATE CASCADE,
 	PRIMARY KEY (name, title, email)
 );
 
 CREATE TABLE transaction ( 
 	id SERIAL PRIMARY KEY,
-	patronEmail citext REFERENCES patron(email),
+	patronEmail citext REFERENCES patron(email)
+		ON UPDATE CASCADE,
 	entrepreneurEmail citext,
 	title citext,
 	amount INT NOT NULL,
 	time TIMESTAMP,
 	FOREIGN KEY (entrepreneurEmail, title) REFERENCES project(email, title)
+		ON UPDATE CASCADE
 );
 
 -- Slight change to ER digram <box>Refund</box> --- <diamond>refunded for</diamond> --- <box>transaction</box>
@@ -64,4 +71,5 @@ CREATE TABLE refund (
 	id SERIAL PRIMARY KEY,
 	amount INT NOT NULL,
 	transactionId INT REFERENCES transaction(id)
+		ON UPDATE CASCADE
 );
