@@ -2,8 +2,6 @@
  ProjectIDs for each item are defined as such:
  <title>-<email>
  */
-
-
 function runOnLoad() {
   getTransactionHist();
 }
@@ -29,13 +27,11 @@ function displayTransactionHist(data) {
   var serverResponse = JSON.parse(data);
 
   if (serverResponse.success == true) {
-    var title = serverResponse.title;
     var transaction = serverResponse.transaction;
-
     var htmlToBeDisplayed = formatHtml(transaction);
 
     document.getElementById("transactionBody").innerHTML = htmlToBeDisplayed;
-    document.getElementById("pageHTML").innerHTML = paginationHTML;
+    //document.getElementById("pageHTML").innerHTML = paginationHTML;
 
   } else {
     console.log(serverResponse.errorMessage);
@@ -68,30 +64,24 @@ function createItemHtml(transaction) {
   var date = transaction.date;
   var amount = transaction.amount;
 
-  var html = `<div class="row">
-
-            <div class="col-md-12">
-                <h3>` + transaction.title + `</h3>
-                <h4>Goal: ` + transaction.email `</h4>
-                <p>` + transaction.date + `</p><br>
-                <p>`+ transaction.amount` </p><br>
-            </div>
-        </div><hr>`;
-  return html;
+  var html2 = `
+    <tr>
+      <td>` + transaction.title + `</td>
+      <td>` + transaction.email + `</td>
+      <td>` + transaction.date + `</td>
+      <td>` + transaction.amount + `</td>
+    </tr>
+  `;
+  return html2;
 }
 
 function displayNoTransaction() {
-    var html = `<div class="col-md-12" align="center">
+    var html = `
+    <tr>
         YOU CURRENTLY HAVE 0 DONATIONS
-    </div>`;
+    </tr>
+    `;
+
 
     return html;
-}
-
-function goToProject(title, email) {
-  var params = "title=" + title + "&email=" + email;
-
-  var html = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
-
-  window.location.href = html;
 }
