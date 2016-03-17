@@ -70,5 +70,62 @@ function displayProject(data) {
 }
 
 function fundmenow() {
-	window.location.href = "/secure/patron-project-funding.html";
+	if ($("#amountDonated").val().trim() == ""){
+    alert("Amount cannot be empty!");
+    return;
+  }
+  else if (isNaN($("#amountDonated").val().trim())){
+    alert("Amount has to be a number");
+    return;
+  }
+  else if ($("#amountDonated").val().trim() <= 0){
+    alert("Amount cannot be zero or negative");
+    return;
+  }
+  else{
+    var projectTitle = getUrlParameters("title", "", true);
+    var projectEmail = getUrlParameters("email", "", true);
+    var amountDonated = $("#amountDonated").val().trim();
+
+    var requestObject = {
+      title: projectTitle,
+      email: projectEmail,
+      amount: amountDonated
+    }
+
+    $.post({
+        url: "/donate",
+        data: JSON.stringify(requestObject),
+        success: function (data, response) {
+            if (response == "success") {
+                alert("Thank you for donating to this project");
+                handleDonateResponse(data);
+            } else {
+                connectionError(response);
+            }
+        },
+        contentType: "application/json"
+    });
+  }
+
+}
+
+function handleDonateResponse(data){
+  var response = JSON.parse(data);
+
+  if(response.success) {
+    var params = "title="
+      + getUrlParameters("title", "", true);
+      + "&email="
+      + getUrlParameters("email", "", true);
+
+    window.location.href = "/secure/patron-project-detail.html?" + encodeURIComponent(params);
+  }
+  else {
+    alert(response.errorMessage);
+  }
+}
+
+function connectionError(response){
+  console.log(response);
 }
