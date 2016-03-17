@@ -50,7 +50,10 @@ function checkHash(status) {
 			}
 				
 			responseObject.userType = status.result.rows[0].type;
+			
 			req.session.email = email;
+			req.session.type = responseObject.userType;
+			
 			lfTools.sendResponse(res, responseObject);
 		}
 	);
