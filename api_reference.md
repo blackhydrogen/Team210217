@@ -543,7 +543,6 @@ Request:
 {
 	title: <string: title of the project user is donating to>,
 	email: <string: email of the project owner>,
-	date: <number (int): current time of donation, given by milliseconds since EPOCH>,
 	amount: <int: amount to be donated>
 }
 ```
