@@ -2,32 +2,6 @@ function runOnLoad() {
     getProjectDetails();
 }
 
-function getUrlParameters(parameter, staticURL, decode) {
-    /*
-     Function: getUrlParameters
-     Description: Get the value of URL parameters either from
-                  current URL or static URL
-     Author: Tirumal
-     URL: www.code-tricks.com
-    */
-    var currLocation = (staticURL.length) ? staticURL : window.location.search,
-        parArr = decodeURIComponent(currLocation).split("?")[1].split("&"),
-        returnBool = true;
-
-    for (var i = 0; i < parArr.length; i++) {
-
-        var parr = parArr[i].split("=");
-        if (parr[0] == parameter) {
-            return (decode) ? decodeURIComponent(parr[1]) : parr[1];
-            returnBool = true;
-        } else {
-            returnBool = false;
-        }
-    }
-
-    if (!returnBool) return false;
-}
-
 function getProjectDetails() {
     var title = getUrlParameters("title", "", true);
     var email = getUrlParameters("email", "", true);
@@ -99,7 +73,7 @@ function fundmenow() {
         success: function (data, response) {
             if (response == "success") {
                 alert("Thank you for donating to this project");
-                handleDonateResponse(data);
+                runOnLoad();
             } else {
                 connectionError(response);
             }
@@ -108,22 +82,6 @@ function fundmenow() {
     });
   }
 
-}
-
-function handleDonateResponse(data){
-  var response = JSON.parse(data);
-
-  if(response.success) {
-    var params = "title="
-      + getUrlParameters("title", "", true);
-      + "&email="
-      + getUrlParameters("email", "", true);
-
-    window.location.href = "/secure/patron-project-detail.html?" + encodeURIComponent(params);
-  }
-  else {
-    alert(response.errorMessage);
-  }
 }
 
 function connectionError(response){
