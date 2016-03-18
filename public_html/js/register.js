@@ -4,7 +4,9 @@ function entreRegistration() {
     .append(
       createEntreRegistrationHTML()
     );
-    console.log("Hello world");
+
+    entrepreneur = true;
+    patron = false;
 }
 
 function patronRegistration() {
@@ -13,6 +15,9 @@ function patronRegistration() {
     .append(
       createPatronRegistrationHTML()
     );
+
+  entrepreneur = false;
+  patron = true;
 }
 
 function createPatronRegistrationHTML() {
@@ -86,6 +91,14 @@ function createEntreRegistrationHTML() {
   return emailHTML + passwordHTML + confirmPassword + companyName + addressHTML + websiteHTML + descriptionHTML + registerButton;
 }
 
+function submitForm() {
+  if(entrepreneur) {
+    entreRegister();
+  } else {
+    patronRegister();
+  }
+}
+
 function entreRegister() {
   // calls the register api
   // needs to watch out for
@@ -95,6 +108,7 @@ function entreRegister() {
 function patronRegister() {
   // calls the register api
 }
+
 
 function checkPasswordMatch(accountType) {
   if(accountType == "entrepreneur") {
@@ -117,3 +131,6 @@ function checkPasswordMatch(accountType) {
     }
   }
 }
+
+var entrepreneur = false;
+var patron = false;
