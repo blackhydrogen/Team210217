@@ -88,18 +88,18 @@ function submitChanges() {
       description: $("#description").val()
     };
 
-    $.post({
-      url: "/editEntrepreneurProfile",
-      data: JSON.stringify(editData),
-      success: function (data, response) {
-        if(response == "success") {
-          checkEditSuccess(data);
-        } else {
-          connectionError(response);
-        }
-      },
-      contentType: "application/json"
-    });
+    // $.post({
+    //   url: "/editEntrepreneurProfile",
+    //   data: JSON.stringify(editData),
+    //   success: function (data, response) {
+    //     if(response == "success") {
+    //       checkEditSuccess(data);
+    //     } else {
+    //       connectionError(response);
+    //     }
+    //   },
+    //   contentType: "application/json"
+    // });
   } else {
     alert("The new password you've entered does not match with the confirmation password.");
     $("#oldPassword").val("");
