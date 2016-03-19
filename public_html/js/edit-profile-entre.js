@@ -57,11 +57,11 @@ function constructHTML(response) {
 
   $(".pf-address")
   .empty()
-  .append("Company Name: ", createTextInput(response.address, "address"));
+  .append("Address: ", createTextInput(response.address, "address"));
 
   $(".pf-website")
   .empty()
-  .append("Company Name: ", createTextInput(response.website, "website"));
+  .append("Website ", createTextInput(response.website, "website"));
 
   $(".pf-description")
   .empty()
