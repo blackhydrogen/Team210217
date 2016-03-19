@@ -32,13 +32,11 @@ function executeSQL(command, data, callback) {
 	pg.connect(dbConnectionString, function(err, client, done) {
         // Handle connection errors
         if(err) {
-			done();
 			returnObject.errorMessage = err;
 			callback(returnObject);
 			return;
         }
 
-        // SQL Query > Insert Data
         client.query(command, data, function(err, result) {
 			done();
 			
@@ -53,26 +51,83 @@ function executeSQL(command, data, callback) {
 			
 			callback(returnObject);
 		});
-
-        // SQL Query > Select Data
-        //var query = client.query("SELECT * FROM items ORDER BY id ASC");
-
-        // Stream results back one row at a time
-        // query.on('row', function(row) {
-            // results.push(row);
-        // });
-
-        // After all data is returned, close connection and return results
-        // query.on('end', function() {
-            // done();
-            // return res.json(results);
-        // });
     });
+}
+
+function executeTransaction(commands, callback) {
+	var returnObject = {
+		success: false,
+		errorMessage: [],
+		result: []
+	};
+	
+	if(!isSetup()) {
+		returnObject.errorMessage = "Database not setup.";
+		callback(returnObject);
+		return;
+	}
+	
+	var rollback = function(client, done) {
+		client.query("ROLLBACK", function(err) {
+			done(err);
+			
+			if(err) {	
+				returnObject.errorMessage.push(err);
+			}
+			
+			callback(returnObject);
+		});
+	};
+	
+	var commandsIndex = 0;
+	
+	pg.connect(dbConnectionString, function(err, client, done) {
+		if(err) {
+			returnObject.errorMessage = err;
+			callback(returnObject);
+			return;
+        }
+		
+		var queryDoneHandler = function(err, result) {
+			if(err) {
+				returnObject.errorMessage.push(err);
+				rollback(client, done);
+				return;
+			}
+			
+			returnObject.result.push(result);
+			
+			if(commandsIndex >= commands.length) {
+				client.query("COMMIT", function(err, result) {
+					done();
+					if(err) {
+						returnObject.errorMessage.push(err);
+						callback(returnObject);
+						return;
+					}
+					
+					returnObject.result.shift(); // Remove the BEGIN results
+					
+					returnObject.success = true;
+					callback(returnObject);
+				});
+				return;
+			}
+			
+			process.nextTick(function() {
+				client.query(commands[commandsIndex], commands[commandsIndex + 1], queryDoneHandler);
+				commandsIndex += 2;
+			});
+		};
+		
+		client.query("BEGIN", queryDoneHandler);
+	});
 }
 
 module.exports = {
 	setup: setup,
 	isSetup: isSetup,
 	executeSQL: executeSQL,
+	executeTransaction: executeTransaction,
 	getDatabaseConnectionString: getDatabaseConnectionString
 };

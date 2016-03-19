@@ -21,10 +21,19 @@ app.get("*", function(req, res, next) {
 	next();
 });
 
-// app.get("/test", function(req, res) {
-	// console.log(req.session);
-	// res.end("OK");
-// });
+app.get("/test", function(req, res) {
+	// console.log("HI1");
+	// lfDatabase.executeTransaction([
+		// "SELECT * FROM account WHERE email=$1", ["ian@gmail.com"],
+		// "SELECT * FROM account WHERE hash=$1", ["1234567890123456789012345678901234567890"],
+		// "SELECT * FROM notablehahahahahaha", []
+	// ], function(cb) {
+		// console.log("HI2");
+		// console.log(cb);
+		// console.log("HI3");
+	// });
+	// res.send("200 ok").end();
+});
 
 app.use(express.static(__dirname + "/public_html"));
 
