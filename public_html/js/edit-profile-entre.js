@@ -135,7 +135,7 @@ function checkEditSuccess(data) {
     window.location.href = "/secure/entrepreneur-profile.html";
   } else {
     alert(response.errorMessage);
-    window.location.href = "/secure/edit-profile-entre.js";
+    window.location.href = "/secure/edit-profile-entre.html";
   }
 }
 
