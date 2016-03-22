@@ -9,20 +9,54 @@ function runOnLoad() {
 }
 
 function getAllProjects(pageNumber) {
-  $.post({
-    url: "/listMyProjects",
-    data: JSON.stringify({
-      page: pageNumber
-    }),
-    success: function (data, response) {
-      if (response == "success") {
-        displayProjects(data);
-      } else {
-        connectionError(response);
+  var data = {
+    success: true,
+    errorMessage: "",
+    currentPage: 3,
+    totalPage: 7,
+    projectsPerPage: 10,
+    projects: [
+      { //first project
+        title: "Project 1",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        goal: 100,
+        raised: 50,
+        start: "20 Jan 2016",
+        end: "30 Jan 2016",
+        tags: ["Music", "IT", "Cars"],
+        email: "abc@abc.com",
+        name: "ABC"
+      },
+      { //second project
+        title: "Project 1",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        goal: 100,
+        raised: 50,
+        start: "20 Jan 2016",
+        end: "30 Jan 2016",
+        tags: ["Music", "IT", "Cars"],
+        email: "abc@abc.com",
+        name: "ABC"
       }
-    },
-    contentType: "application/json"
-  });
+    ]
+  }
+
+  displayProjects(JSON.stringify(data));
+
+  // $.post({
+  //   url: "/listMyProjects",
+  //   data: JSON.stringify({
+  //     page: pageNumber
+  //   }),
+  //   success: function (data, response) {
+  //     if (response == "success") {
+  //       displayProjects(data);
+  //     } else {
+  //       connectionError(response);
+  //     }
+  //   },
+  //   contentType: "application/json"
+  // });
 }
 
 function displayProjects(data) {
@@ -82,6 +116,7 @@ function createItemHtml(page, project) {
                 <h4>Goal: ` + project.raised + ` / ` + project.goal + `</h4>
                 <p>` + description + `</p>
                 <a class="btn btn-primary" onclick="goToProject('` + project.title + `', '` + project.email + `')">View Project</i></a>
+                <a class="btn btn-primary" onclick="goToTransactionHistory('` + project.title + `', '` + project.email + `')">Donation History</i></a>
             </div>
         </div><hr>`;
   return html;
@@ -141,6 +176,11 @@ function createPageNumberHTML(iter, currPage) {
 
 function displayNoProjects() {
 
+}
+
+function goToTransactionHistory(email, title) {
+  var params = "title=" + title + "&email=" + email;
+  window.location.href = "/secure/entre-project-transaction.html?" + encodeURIComponent(params);
 }
 
 function goToProject(title, email) {
