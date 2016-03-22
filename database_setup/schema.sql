@@ -16,7 +16,7 @@ CREATE TABLE entrepreneur (
 	name TEXT NOT NULL,
 	website TEXT,
 	address TEXT,
-	description TEXT,
+	description TEXT
 --	profile_pic_url VARCHAR(256)
 );
 
@@ -29,7 +29,7 @@ CREATE TABLE admin (
 CREATE TABLE patron (
 	email citext PRIMARY KEY REFERENCES account(email)
 		ON UPDATE CASCADE,
-	name TEXT NOT NULL,
+	name TEXT NOT NULL
 --	profile_pic_url VARCHAR(256)
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE project (
 	title TEXT,
 	email citext REFERENCES entrepreneur(email)
 		ON UPDATE CASCADE, 
-	goal INT CHECK (goal > 0) NOT NULL,
+	goal NUMERIC CHECK (goal > 0) NOT NULL,
 	start_time TIMESTAMP NOT NULL,
 	end_time TIMESTAMP NOT NULL,
 	description TEXT,
@@ -59,8 +59,8 @@ CREATE TABLE transaction (
 	patronEmail citext REFERENCES patron(email)
 		ON UPDATE CASCADE,
 	entrepreneurEmail citext,
-	title citext,
-	amount INT NOT NULL,
+	title TEXT,
+	amount NUMERIC NOT NULL,
 	time TIMESTAMP,
 	FOREIGN KEY (entrepreneurEmail, title) REFERENCES project(email, title)
 		ON UPDATE CASCADE
@@ -69,7 +69,8 @@ CREATE TABLE transaction (
 -- Slight change to ER digram <box>Refund</box> --- <diamond>refunded for</diamond> --- <box>transaction</box>
 CREATE TABLE refund (
 	id SERIAL PRIMARY KEY,
-	amount INT NOT NULL,
+	amount NUMERIC NOT NULL,
+	time TIMESTAMP,
 	transactionId INT REFERENCES transaction(id)
 		ON UPDATE CASCADE
 );
