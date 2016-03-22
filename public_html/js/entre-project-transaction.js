@@ -76,8 +76,7 @@ function goToUser(email) {
 }
 
 function backToProject() {
-  var params = "title=" + getUrlParameters("title", "", true) + "&email=" + getUrlParameters("email", "", true);
-  window.location.href = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
+  window.location.href = "/secure/entre-project-detail.html?" + window.location.search;
 }
 
 function connectionError(errorMessage) {
