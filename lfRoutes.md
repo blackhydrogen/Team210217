@@ -42,6 +42,8 @@ function handler(reql, resl) {
 	
 	if(!lfTools.requestObjectIsValid(requestObject))
 		return;
+		
+	;
 	
 	lfTools.sendResponse(res, responseObject);
 }

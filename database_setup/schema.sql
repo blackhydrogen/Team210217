@@ -17,7 +17,7 @@ CREATE TABLE entrepreneur (
 	website TEXT,
 	address TEXT,
 	description TEXT,
-	profile_pic_url VARCHAR(256)
+--	profile_pic_url VARCHAR(256)
 );
 
 CREATE TABLE admin (
@@ -30,7 +30,7 @@ CREATE TABLE patron (
 	email citext PRIMARY KEY REFERENCES account(email)
 		ON UPDATE CASCADE,
 	name TEXT NOT NULL,
-	profile_pic_url VARCHAR(256)
+--	profile_pic_url VARCHAR(256)
 );
 
 CREATE TABLE project (
