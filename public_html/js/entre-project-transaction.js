@@ -46,6 +46,10 @@ function displayTransactionDetails() {
 function displayTransactionHistory(data, title, email) {
   var response = JSON.parse(data);
 
+  $(".lf-title")
+  .empty()
+  .append(title)
+
   $(".page-header")
   .empty()
   .append(title);
