@@ -3,6 +3,7 @@
  <title>-<email>
  */
 function runOnLoad() {
+  createSearchBar();
   getTransactionHist();
 }
 
