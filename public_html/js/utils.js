@@ -27,3 +27,21 @@ function getUrlParameters(parameter, staticURL, decode) {
 
   if (!returnBool) return false;
 }
+
+function createSearchBar() {
+  var html = `<form class="navbar-form" role="search" onsubmit="performSearch(); return false;">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search" name="srch-term" id="searchInput">
+                  <div class="input-group-btn">
+                    <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                  </div>
+                </div>
+              </form>`;
+  $(".search-bar")
+  .empty()
+  .append(html);
+}
+
+function performSearch() {
+  console.log($("#searchInput").val());
+}
