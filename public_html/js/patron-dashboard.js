@@ -5,6 +5,7 @@
 
 
 function runOnLoad() {
+  createSearchBar();
   getAllProjects(1);
 }
 
