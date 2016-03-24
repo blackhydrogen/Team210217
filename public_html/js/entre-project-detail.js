@@ -12,7 +12,7 @@ function getProjectDetails() {
     raised: 50,
     start: "20 Jan 2016",
     end: "30 Jan 2016",
-    tags: ["Music", "IT", "Cars"],
+    tags: "Music, IT, Cars",
     email: "abc@abc.com",
     name: "ABC"
   };
@@ -63,16 +63,18 @@ function displayProject(data) {
 
 function createTags(tags) {
   var html = "";
+  var arrayTags = tags.trim();
+  arrayTags = arrayTags.split(",");
 
-  for (var i = 0; i < tags.length; i++) {
-    html = html + `<button type="button" class="btn btn-info btn-sm">`+ tags[i] +`</button>`;
+  for (var i = 0; i < arrayTags.length; i++) {
+    html = html + `<button type="button" class="btn btn-info btn-sm">`+ arrayTags[i] +`</button>`;
   }
 
   return html;
 }
 
 function loadTransactionHistory() {
-  window.location.href = "/secure/entre-project-transaction.html?" + window.location.search;
+  window.location.href = "/secure/entre-project-transaction.html" + window.location.search;
 }
 
 function loadEditPage() {
