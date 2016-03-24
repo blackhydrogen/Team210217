@@ -1,5 +1,6 @@
 function runOnLoad() {
-    getProjectDetails();
+  createSearchBar();
+  getProjectDetails();
 }
 
 function getProjectDetails() {
