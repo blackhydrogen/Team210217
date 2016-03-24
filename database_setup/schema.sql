@@ -68,9 +68,8 @@ CREATE TABLE transaction (
 
 -- Slight change to ER digram <box>Refund</box> --- <diamond>refunded for</diamond> --- <box>transaction</box>
 CREATE TABLE refund (
-	id SERIAL PRIMARY KEY,
 	amount NUMERIC NOT NULL,
 	time TIMESTAMP,
-	transactionId INT REFERENCES transaction(id)
+	transactionId INT PRIMARY KEY REFERENCES transaction(id)
 		ON UPDATE CASCADE
 );
