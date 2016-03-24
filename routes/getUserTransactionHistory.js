@@ -38,6 +38,10 @@ function handler(reql, resl) {
 			
 			responseObject.transactions = status.result.rows;
 			
+			for(var i = 0; i < responseObject.transactions.length; i++) {
+				responseObject.transactions[i].time = responseObject.transactions[i].time.getTime();
+			}
+			
 			lfTools.sendResponse(res, responseObject);
 		}
 	);

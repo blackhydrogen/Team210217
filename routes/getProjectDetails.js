@@ -2,6 +2,8 @@ var lfDatabase = require("../lfDatabase");
 var lfTools = require("../lfTools");
 var lfHash = require("../lfHash");
 
+var lfProjectHelper = require("../lfProjectHelper");
+
 var req;
 var res;
 
@@ -15,67 +17,43 @@ function handler(reql, resl) {
 
     if(!lfTools.requestObjectIsValid(requestObject))
         return;
+	
 	if(!req.session.email) {
-		lfTools.sendError(res, "Login required!");
-		return;
+		return lfTools.sendError(res, "Login required!");
 	}
 	
-	responseObject.title = requestObject.title;
-	responseObject.email = requestObject.email;
+	var title = requestObject.title;
+	var email = requestObject.email;
 	
-	responseObject.raised = 0; //TODO - temp value.
-	
-	var collectCount = 3;
-	function collect() {
-		collectCount--;
-		if(collectCount == 0)
-			sendResponse(res, responseObject);
-	}
-	
+	responseObject.title = title;
+	responseObject.email = email;
+
 	lfDatabase.executeSQL(
-		"SELECT * FROM project WHERE email=$1 AND title=$2",
+		"SELECT description, goal, start_time AS start, end_time AS end FROM project WHERE email=$1 AND title=$2",
 		[requestObject.email, requestObject.title],
 		function(status) {
-			if(status.result.rowCount != 1) {
-				sendError(res, "Project not found.");
-				return;
-			}
+			if(!status.success)
+				return sendError(res, "An unexpected error occured.");
+			else if(status.result.rowCount != 1)
+				return sendError(res, "Project not found.");
 			
 			var sqlRow = status.result.rows[0];
 			
 			responseObject.description = sqlRow.description;
 			responseObject.goal = sqlRow.goal;
-			responseObject.start = sqlRow.start_time;
-			responseObject.end = sqlRow.end_time;
+			responseObject.start = sqlRow.start.getTime();
+			responseObject.end = sqlRow.end.getTime();
 			
-			collect();
-		}
-	);
-	
-	lfDatabase.executeSQL(
-		"SELECT * FROM tag WHERE email=$1 AND title=$2",
-		[requestObject.email, requestObject.title],
-		function(status) {
-			responseObject.tags = "";
-			
-			if(status.result.rows.length >= 1) {
-				responseObject.tags = status.result.rows[0].name;
-			}
-			
-			for(var i = 1; i < status.result.rows.length; i++) {	
-				responseObject.tags += ", " + status.result.rows[i].name;
-			}
-			
-			collect();
-		}
-	);
-	
-	lfDatabase.executeSQL(
-		"SELECT name FROM entrepreneur WHERE email=$1",
-		[requestObject.email],
-		function(status) {
-			responseObject.name = status.result.rows[0].name;
-			collect();
+			lfProjectHelper.getProjectPeripheralDetails(
+				[responseObject],
+				function(projects) {
+					if(projects == null)
+						return sendError(res, "An unexpected error occured.");
+					
+					responseObject = projects[0];
+					lfTools.sendResponse(res, responseObject);
+				}
+			);
 		}
 	);
 }
