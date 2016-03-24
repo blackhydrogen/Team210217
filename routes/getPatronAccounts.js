@@ -25,14 +25,14 @@ function handler(reql, resl) {
 	
 	if(!search) {
 		lfDatabase.executeSQL(
-			"SELECT email, name FROM patron",
+			"SELECT name, email FROM patron",
 			[],
 			sqlHandler
 		);
 	}
 	else {
 		lfDatabase.executeSQL(
-			"SELECT email, name FROM patron WHERE email LIKE $1",
+			"SELECT name, email FROM patron WHERE email LIKE $1",
 			["%" + search + "%"],
 			sqlHandler
 		);
@@ -44,14 +44,7 @@ function sqlHandler(status) {
 		return lfTools.sendError(res, "Unexpected error occured.");
 	}
 	
-	responseObject.users = [];
-	
-	for(var i = 0; i < status.result.rows.length; i++) {
-		responseObject.users.push({
-			email: status.result.rows[i].email,
-			name: status.result.rows[i].name
-		});
-	}
+	responseObject.users = status.result.rows;
 	
 	lfTools.sendResponse(res, responseObject);
 }

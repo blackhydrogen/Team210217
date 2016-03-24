@@ -44,17 +44,7 @@ function sqlHandler(status) {
 		return lfTools.sendError(res, "Unexpected error occured.");
 	}
 	
-	responseObject.users = [];
-	
-	for(var i = 0; i < status.result.rows.length; i++) {
-		responseObject.users.push({
-			email: status.result.rows[i].email,
-			name: status.result.rows[i].name,
-			website: status.result.rows[i].website,
-			address: status.result.rows[i].address,
-			description: status.result.rows[i].description
-		});
-	}
+	responseObject.users = status.result.rows;
 	
 	lfTools.sendResponse(res, responseObject);
 }
