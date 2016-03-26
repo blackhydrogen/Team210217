@@ -109,7 +109,7 @@ function submitChanges() {
       $("#cfmPassword").val("");
     }
   } else {
-    if(hasPassword() == false && hasEmptyPasswords()) {
+    if(hasPassword() == false && hasEmptyPasswords() == false) {
       alert("If you're intending to change your password, please complete the password fields.");
       $("#oldPassword").val("");
       $("#newPassword").val("");
