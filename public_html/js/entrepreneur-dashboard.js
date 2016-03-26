@@ -69,7 +69,7 @@ function displayProjects(data) {
     var projects = serverResponse.projects;
 
     if(projects.length != 0) {
-      var htmlToBeDisplayed = formatHtml(currentPage, projects);
+      var htmlToBeDisplayed = formatHtml(projects);
       var paginationHTML = createPaginationHTML(currentPage, totalPage);
       document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
       document.getElementById("pageHTML").innerHTML = paginationHTML;
@@ -85,14 +85,14 @@ function connectionError(response) {
   console.log(response);
 }
 
-function formatHtml(currPage, projects) {
+function formatHtml(projects) {
   if (projects.length == 0) {
     displayNoProjects();
   } else {
     var entireHTML = "";
 
     for (var i = 0; i < projects.length; i++) {
-      var html = createItemHtml(currPage, projects[i]);
+      var html = createItemHtml(projects[i]);
 
       entireHTML = entireHTML + html;
     }
@@ -101,7 +101,7 @@ function formatHtml(currPage, projects) {
   return entireHTML;
 }
 
-function createItemHtml(page, project) {
+function createItemHtml(project) {
   var description = project.description;
   if(description.length > 400) {
     description = description.substring(0, 399);

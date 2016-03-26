@@ -56,5 +56,23 @@ function createSearchBar() {
 }
 
 function performSearch() {
-  console.log($("#searchInput").val());
+  var searchInput = $("#searchInput").val();
+  window.location.href = "/secure/search-dashboard.html?" + encodeURIComponent("search=" + searchInput);
+}
+
+function getCurrentUser(callback) {
+  $.post({
+    url: "/getUser",
+    data: JSON.stringify({
+    }),
+    success: function (data, response) {
+      if(response == "success") {
+        var serverResponse = JSON.parse(data);
+        callback(serverResponse);
+      } else {
+        return "error";
+      }
+    },
+    contentType: "application/json"
+  });
 }
