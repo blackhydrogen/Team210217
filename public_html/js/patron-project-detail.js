@@ -6,6 +6,7 @@ function runOnLoad() {
 function getProjectDetails() {
     var title = getUrlParameters("title", "", true);
     var email = getUrlParameters("email", "", true);
+    console.log(title);
 
     $.post({
         url: "/getProjectDetails",
@@ -52,7 +53,7 @@ function displayProject(data) {
 			<li>Raised: ${response.raised}</li>
 			<li>Start Time: ${new Date(response.start).toLocaleString()}</li>
 			<li>End Time: ${new Date(response.end).toLocaleString()}</li>
-			<li>Tags:` + createTags(response.tags) + `</li>
+			<li>Tags: ` + response.tags + `</li>
 		`)
 	}
 	else {
@@ -60,28 +61,31 @@ function displayProject(data) {
 	}
 }
 
-function createTags(tags){
-  var arrayTags = tags.trim("").split(",");
-  var html="";
-
-  for(var i=0;i<arrayTags.length;i++){
-    html = html+`<button type="button" class="btn btn-info btn-sm">`+ arrayTags[i] +`</button>`;
-  }
-
-  return html;
-}
+// function createTags(tags){
+//   var arrayTags = tags.trim("").split(",");
+//   var html="";
+//
+//   for(var i=0;i<arrayTags.length;i++){
+//     html = html+`<button type="button" class="btn btn-info btn-sm">`+ arrayTags[i] +`</button>`;
+//   }
+//
+//   return html;
+// }
 
 function fundmenow() {
 	if ($("#amountDonated").val().trim() == ""){
     alert("Amount cannot be empty!");
+    $("#amountDonated").val("");
     return;
   }
   else if (isNaN($("#amountDonated").val().trim())){
     alert("Amount has to be a number");
+    $("#amountDonated").val("");
     return;
   }
   else if ($("#amountDonated").val().trim() <= 0){
     alert("Amount cannot be zero or negative");
+    $("#amountDonated").val("");
     return;
   }
   else{
@@ -101,6 +105,7 @@ function fundmenow() {
         success: function (data, response) {
             if (response == "success") {
                 alert("Thank you for donating to this project");
+                $("#amountDonated").val("");
                 runOnLoad();
             } else {
                 connectionError(response);
