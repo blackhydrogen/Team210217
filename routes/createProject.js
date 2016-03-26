@@ -59,6 +59,8 @@ function handler(reql, resl) {
 				return lfTools.sendError(res, "An error occured when creating the project. Please check the project details, and remember your project titles must be unique.");
 			}
 			
+			responseObject.title = title;
+			responseObject.email = email;
 			lfTools.sendResponse(res, responseObject);
 		}
 	);
