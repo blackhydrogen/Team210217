@@ -1,4 +1,5 @@
 function runOnLoad() {
+  createSearchBar();
   getUserDetails();
 }
 
@@ -57,11 +58,11 @@ function constructHTML(response) {
 
   $(".pf-address")
   .empty()
-  .append("Company Name: ", createTextInput(response.address, "address"));
+  .append("Address: ", createTextInput(response.address, "address"));
 
   $(".pf-website")
   .empty()
-  .append("Company Name: ", createTextInput(response.website, "website"));
+  .append("Website ", createTextInput(response.website, "website"));
 
   $(".pf-description")
   .empty()
@@ -135,7 +136,7 @@ function checkEditSuccess(data) {
     window.location.href = "/secure/entrepreneur-profile.html";
   } else {
     alert(response.errorMessage);
-    window.location.href = "/secure/edit-profile-entre.js";
+    window.location.href = "/secure/edit-profile-entre.html";
   }
 }
 

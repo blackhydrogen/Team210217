@@ -29,7 +29,7 @@ function getUrlParameters(parameter, staticURL, decode) {
 }
 
 function createSearchBar() {
-  var html = `<form class="navbar-form" role="search" onsubmit="performSearch(); return false;">
+  var html = `<form class="navbar-form" onsubmit="performSearch(); return false;">
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="Search" name="srch-term" id="searchInput">
                   <div class="input-group-btn">
