@@ -22,18 +22,18 @@ function connectionSuccess(data) {
     if(serverResponse.success == true) {
         // user has successfully logged in
         if(serverResponse.userType == "patron") {
-            
+
         } else if(serverResponse.userType == "entrepreneur") {
             window.location.href = "/secure/entrepreneur-dashboard.html";
         } else if(serverResponse.userType == "admin") {
-            
+
         } else {
             // random error
         }
-        
+
     } else {
         // print serverResponse.errorMessage
-        userDoesNotExist();
+        loginError(serverResponse);
     }
 }
 
@@ -43,8 +43,18 @@ function loginNetworkError() {
 }
 
 // user does not exist
-function userDoesNotExist() {
-    
+function loginError(serverResponse) {
+  var errorMessage = serverResponse.errorMessage;
+
+  if(errorMessage == "Invalid username/password.") {
+    invalidUserError();
+  }
 }
 
-document.getElementById('loginButton').onclick = function() {loginFunction(); return false;};
+function invalidUserError() {
+  $("#loginError").css({'color': 'red', 'position': 'relative', 'left':'60px'});
+  $("#loginError")
+  .empty()
+  .append("Invalid username/password");
+  $("#password").val("");
+}

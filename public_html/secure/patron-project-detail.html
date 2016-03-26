@@ -42,19 +42,28 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Let's Fund</a>
+                <a class="navbar-brand" href="/index.html">Let's Fund</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="search-bar">
+                      ...
+                    </li>
                     <li>
-                        <a href="entrepreneur-dashboard.html">My Projects</a>
+                        <a href="patron-dashboard.html">Projects</a>
+                    </li>
+                    <li>
+                        <a href="patron-donation.html" >My Donations</a>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="edit-profile-entre.html">Edit Profile</a>
+                              <a href="patron-profile.html">My Profile</a>
+                            </li>
+                            <li>
+                                <a href="patron-edit-profile.html">Edit Profile</a>
                             </li>
                             <li>
                                 <a href="#" onclick="logout()">Logout</a>
@@ -74,12 +83,14 @@
         <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Edit Project Details
-                </h1>
+                <!--<h1 class="page-header">
+                  Project Details
+                </h1>-->
+                <h1><span class="lf-title">Loading...</span></h1>
                 <ol class="breadcrumb">
-                    <li><a href="entrepreneur-dashboard.html">My Projects</a>
+                    <li><a href="patron-dashboard.html">Project</a>
                     </li>
-                    <li class="active"><span class="lf-title-noedit">Loading...</span></li>
+                    <li class="active"><span class="lf-title">Loading...</span></li>
                 </ol>
             </div>
         </div>
@@ -121,13 +132,17 @@
             </div>
 
             <div class="col-md-4">
-                <h3><span class="lf-title">Loading...</span></h3>
+
                 <p><span class="lf-description">Loading...</span></p>
                 <h3>Project Details</h3>
                 <ul class="lf-details">
                     <li>Loading...</li>
                 </ul>
-				<input type="button" value="Save" onclick="saveDetails()">
+                <div>
+                  Amount
+                  <input type="text" id="amountDonated"></input>
+                  <a class="btn btn-primary" onclick="fundmenow()">Fund Me Now</i></a>
+                </div>
             </div>
 
         </div>
@@ -185,7 +200,7 @@
     <script src="/js/jquery.js"></script>
 
     <!--script for this page-->
-    <script src="/js/entre-project-detail-edit.js"></script>
+    <script src="/js/patron-project-detail.js"></script>
     <script src="/js/utils.js"></script>
 
     <!-- Bootstrap Core JavaScript -->

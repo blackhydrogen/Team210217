@@ -5,12 +5,13 @@
 
 
 function runOnLoad() {
+  createSearchBar();
   getAllProjects(1);
 }
 
 function getAllProjects(pageNumber) {
   $.post({
-    url: "/listMyProjects",
+    url: "/listProjects",
     data: JSON.stringify({
       page: pageNumber
     }),
@@ -54,40 +55,41 @@ function formatHtml(currPage, projects) {
   } else {
     var entireHTML = "";
 
-    for (var i = 0; i < projects.length; i++) {
-      var html = createItemHtml(currPage, projects[i]);
+    for (var i = 0; i < projects.length-1; i+=2) {
+      var html = createItemHtml(currPage, i, projects[i]);
+      var html2 = createItemHtml(currPage, i, projects[i+1]);
 
-      entireHTML = entireHTML + html;
+      entireHTML = entireHTML + `<div class="row">` + html + html2 + `</div><hr>`;
     }
   }
 
   return entireHTML;
 }
 
-function createItemHtml(page, project) {
-  var description = project.description;
-  if(description.length > 400) {
-    description = description.substring(0, 399);
-    description = description + "...";
+function createItemHtml(page, itemNo, project) {
+  var projectDesc = project.description;
+  if(projectDesc.length > 50){
+    projectDesc = project.description.substring(0, 49) + `...`;
   }
-
-  var html = `<div class="row">
-            <div class="col-md-7">
+  var html =
+            `<div class="col-md-3">
                 <a href="portfolio-item.html">
                     <img class="img-responsive img-hover" src="http://placehold.it/700x300" alt="">
                 </a>
             </div>
-            <div class="col-md-5">
-                <h3>` + project.title + `</h3>
-                <h4>Goal: ` + project.raised + ` / ` + project.goal + `</h4>
-                <p>` + description + `</p>
+            <div class="col-md-3">
+                <h4>` + project.title + `</h4>
+                <h5>Goal: ` + project.raised + ` / ` + project.goal + `</h5>
+                <p>` + projectDesc + `</p>
                 <a class="btn btn-primary" onclick="goToProject('` + project.title + `', '` + project.email + `')">View Project</i></a>
-            </div>
-        </div><hr>`;
+            </div>`;
+
   return html;
 }
 
-function createPaginationHTML(currPage, totPage) {
+
+
+function createPaginationHTML(currPage, totPage){
   var leftStr = "";
   var rightStr = "";
   var centre = "";
@@ -139,14 +141,19 @@ function createPageNumberHTML(iter, currPage) {
   }
 }
 
+
 function displayNoProjects() {
 
 }
 
 function goToProject(title, email) {
+  console.log(title);
+  console.log(email);
   var params = "title=" + title + "&email=" + email;
 
-  var html = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
+  var html = "/secure/patron-project-detail.html?" + encodeURIComponent(params);
+  console.log(html);
+  console.log(decodeURIComponent(html));
 
   window.location.href = html;
 }

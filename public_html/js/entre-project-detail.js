@@ -2,32 +2,6 @@ function runOnLoad() {
     getProjectDetails();
 }
 
-function getUrlParameters(parameter, staticURL, decode) {
-    /*
-     Function: getUrlParameters
-     Description: Get the value of URL parameters either from 
-                  current URL or static URL
-     Author: Tirumal
-     URL: www.code-tricks.com
-    */
-    var currLocation = (staticURL.length) ? staticURL : window.location.search,
-        parArr = decodeURIComponent(currLocation).split("?")[1].split("&"),
-        returnBool = true;
-        
-    for (var i = 0; i < parArr.length; i++) {
-
-        var parr = parArr[i].split("=");
-        if (parr[0] == parameter) {
-            return (decode) ? decodeURIComponent(parr[1]) : parr[1];
-            returnBool = true;
-        } else {
-            returnBool = false;
-        }
-    }
-
-    if (!returnBool) return false;
-}
-
 function getProjectDetails() {
     var title = getUrlParameters("title", "", true);
     var email = getUrlParameters("email", "", true);
@@ -51,9 +25,11 @@ function getProjectDetails() {
 }
 
 function displayProject(data) {
-    var response = JSON.parse(data);
-	
+  var response = JSON.parse(data);
+  console.log(response);
+
 	if(response.success) {
+    $(".page-header").html(response.title);
 		$(".lf-title").html(response.title);
 		$(".lf-description").html(response.description);
 		$(".lf-details").html(`
@@ -61,12 +37,22 @@ function displayProject(data) {
 			<li>Raised: ${response.raised}</li>
 			<li>Start Time: ${new Date(response.start).toLocaleString()}</li>
 			<li>End Time: ${new Date(response.end).toLocaleString()}</li>
-			<li>Tags: ${response.tags}</li>
+			<li>Tags: `+ createTags(response.tags) + `</li>
 		`)
 	}
 	else {
 		alert(response.errorMessage);
 	}
+}
+
+function createTags(tags) {
+  var html = "";
+
+  for (var i = 0; i < tags.length; i++) {
+    html = html + `<button type="button" class="btn btn-info btn-sm">`+ tags[i] +`</button>`;
+  }
+
+  return html;
 }
 
 function loadEditPage() {
