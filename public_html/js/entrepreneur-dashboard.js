@@ -68,12 +68,14 @@ function displayProjects(data) {
     var totalPage = serverResponse.totalPage;
     var projects = serverResponse.projects;
 
-    var htmlToBeDisplayed = formatHtml(currentPage, projects);
-    var paginationHTML = createPaginationHTML(currentPage, totalPage);
-
-    document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
-    document.getElementById("pageHTML").innerHTML = paginationHTML;
-
+    if(projects.length != 0) {
+      var htmlToBeDisplayed = formatHtml(currentPage, projects);
+      var paginationHTML = createPaginationHTML(currentPage, totalPage);
+      document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
+      document.getElementById("pageHTML").innerHTML = paginationHTML;
+    } else {
+      displayNoProjects();
+    }
   } else {
     console.log(serverResponse.errorMessage);
   }
@@ -176,7 +178,7 @@ function createPageNumberHTML(iter, currPage) {
 }
 
 function displayNoProjects() {
-
+  document.getElementById("projectBody").innerHTML = "<h3>You do not have any projects!</h3>";
 }
 
 function goToTransactionHistory(email, title) {
