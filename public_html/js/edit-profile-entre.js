@@ -112,7 +112,7 @@ function submitChanges() {
     alert("If you're intending to change your password, please complete the password fields.");
     $("#oldPassword").val("");
     $("#newPassword").val("");
-    $("#cfmPassword").val("")
+    $("#cfmPassword").val("");
   }
 }
 
