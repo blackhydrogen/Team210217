@@ -79,7 +79,7 @@ function createTextInput(holder, id) {
 }
 
 function submitChanges() {
-  if(hasPassword()) {
+  if(hasPassword() || hasEmptyPasswords()) {
     if(isNewPasswordMatch()) {
       var editData = {
         oldPassword: $("#oldPassword").val(),
@@ -109,12 +109,10 @@ function submitChanges() {
       $("#cfmPassword").val("");
     }
   } else {
-    if(hasPassword() == false && hasEmptyPasswords() == false) {
-      alert("If you're intending to change your password, please complete the password fields.");
-      $("#oldPassword").val("");
-      $("#newPassword").val("");
-      $("#cfmPassword").val("");
-    }
+    alert("If you're intending to change your password, please complete the password fields.");
+    $("#oldPassword").val("");
+    $("#newPassword").val("");
+    $("#cfmPassword").val("")
   }
 }
 
