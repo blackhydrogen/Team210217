@@ -33,9 +33,9 @@ function handler(reql, resl) {
 		[requestObject.email, requestObject.title],
 		function(status) {
 			if(!status.success)
-				return sendError(res, "An unexpected error occured.");
+				return lfTools.sendError(res, "An unexpected error occured.");
 			else if(status.result.rowCount != 1)
-				return sendError(res, "Project not found.");
+				return lfTools.sendError(res, "Project not found.");
 			
 			var sqlRow = status.result.rows[0];
 			
@@ -48,7 +48,7 @@ function handler(reql, resl) {
 				[responseObject],
 				function(projects) {
 					if(projects == null)
-						return sendError(res, "An unexpected error occured.");
+						return lfTools.sendError(res, "An unexpected error occured.");
 					
 					responseObject = projects[0];
 					lfTools.sendResponse(res, responseObject);

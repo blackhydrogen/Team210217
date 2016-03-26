@@ -18,11 +18,19 @@ function handler(reql, resl) {
     if(!lfTools.requestObjectIsValid(requestObject))
         return;
 	
-	if(req.session.type != "entrepreneur") {
+	var email = req.session.email;
+	
+	if(req.session.type == "entrepreneur") {
+		//do nothing
+	}
+	else if(req.session.type == "admin") {
+		email = requestObject.email;
+	} 
+	else {
 		return lfTools.sendError(res, "Invalid account!");
 	}
 	
-	var email = req.session.email;
+	
 	var page = parseInt(requestObject.page) || 1;
 	var projectsPerPage = parseInt(requestObject.projectsPerPage) || 10;
 	var filters = requestObject.filters || {}; //Not used yet
@@ -32,19 +40,56 @@ function handler(reql, resl) {
 	responseObject.currentPage = page;
 	responseObject.projectsPerPage = projectsPerPage;
 
-	lfDatabase.executeSQL(
-		`SELECT title, description, goal, start_time AS start, end_time AS end FROM project
-		WHERE email=$1
-		ORDER BY title
-		OFFSET $2 LIMIT $3`,
-		[email, (page - 1) * projectsPerPage, projectsPerPage],
+	var sqlTransaction = [];
+	if(filters.general) {
+		sqlTransaction.push(
+			`(
+				SELECT p.title, p.email, p.description, p.goal, p.start_time AS start, p.end_time AS end
+				FROM project p
+				WHERE (p.title, p.email) IN (
+					SELECT t.title, t.email
+					FROM tag t
+					WHERE LOWER(t.name) LIKE $1
+					AND email=$2
+				)
+			)
+			UNION
+			(
+				SELECT title, email, description, goal, start_time AS start, end_time AS end
+				FROM project
+				WHERE (LOWER(title) LIKE $1
+				OR LOWER(email) LIKE $1
+				OR LOWER(description) LIKE $1)
+				AND email=$2
+			)
+			ORDER BY title`
+		);
+		sqlTransaction.push(["%" + filters.general.toLowerCase() + "%", email]);
+	}
+	else {
+		sqlTransaction.push(
+			`SELECT title, description, goal, start_time AS start, end_time AS end FROM project
+			WHERE email=$1
+			ORDER BY title`
+		);
+		sqlTransaction.push([email]);
+	}
+	
+	lfDatabase.executeTransaction(
+		sqlTransaction,
 		function(status) {
 			if(!status.success)
-				return sendError(res, "An unexpected error occured.");
+				return lfTools.sendError(res, "An unexpected error occured.");
 			
-			for(var i = 0; i < status.result.rows.length; i++) {
+			responseObject.totalPage = Math.ceil(status.result[0].rows.length / projectsPerPage);
+			
+			for(var i = 0; i < projectsPerPage; i++) {
+				var rowNumber = (page - 1) * projectsPerPage + i;
+				if(rowNumber >= status.result[0].rows.length)
+					break;
+				
 				var project = {};
-				var sqlRow = status.result.rows[i];
+				var sqlRow = status.result[0].rows[rowNumber];
 			
 				project.email = email;
 				project.title = sqlRow.title;
@@ -60,7 +105,7 @@ function handler(reql, resl) {
 				projects,
 				function(newProjects) {
 					if(newProjects == null)
-						return sendError(res, "An unexpected error occured.");
+						return lfTools.sendError(res, "An unexpected error occured.");
 					
 					responseObject.projects = newProjects;
 					lfTools.sendResponse(res, responseObject);

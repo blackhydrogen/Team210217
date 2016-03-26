@@ -28,18 +28,41 @@ function handler(reql, resl) {
 		return lfTools.sendError(res, "Invalid user.");
 	}
 	
-	lfDatabase.executeSQL(
-		"SELECT id, title, entrepreneurEmail AS email, time, amount FROM transaction WHERE patronEmail=$1",
-		[email],
+	lfDatabase.executeTransaction([
+			`SELECT id, title, entrepreneurEmail AS email, time, amount
+			FROM transaction
+			WHERE patronEmail=$1
+			AND id NOT IN (
+				SELECT transactionId FROM refund
+			)`,
+			[email],
+			`SELECT id, title, entrepreneurEmail AS email, time, amount
+			FROM transaction
+			WHERE patronEmail=$1
+			AND id IN (
+				SELECT transactionId FROM refund
+			)`,
+			[email]
+		],
 		function(status) {	
 			if(!status.success) {
 				return lfTools.sendError(res, "Unexpected error occured.");
 			}
 			
-			responseObject.transactions = status.result.rows;
+			responseObject.transactions = [];
 			
-			for(var i = 0; i < responseObject.transactions.length; i++) {
-				responseObject.transactions[i].time = responseObject.transactions[i].time.getTime();
+			for(var i = 0; i < status.result[0].rows.length; i++) {
+				status.result[0].rows[i].time = status.result[0].rows[i].time.getTime();
+				status.result[0].rows[i].amount = parseFloat(status.result[0].rows[i].amount);
+				status.result[0].rows[i].isRefundable = true;
+				responseObject.transactions.push(status.result[0].rows[i]);
+			}
+			
+			for(var i = 0; i < status.result[1].rows.length; i++) {
+				status.result[1].rows[i].time = status.result[1].rows[i].time.getTime();
+				status.result[1].rows[i].amount = parseFloat(status.result[1].rows[i].amount);
+				status.result[1].rows[i].isRefundable = false;
+				responseObject.transactions.push(status.result[1].rows[i]);
 			}
 			
 			lfTools.sendResponse(res, responseObject);
