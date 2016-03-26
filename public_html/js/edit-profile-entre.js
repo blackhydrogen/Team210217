@@ -79,33 +79,42 @@ function createTextInput(holder, id) {
 }
 
 function submitChanges() {
-  if(isNewPasswordMatch()) {
-    var editData = {
-      oldPassword: $("#oldPassword").val(),
-      newPassword: $("#newPassword").val(),
-      name: $("#companyName").val(),
-      address: $("#address").val(),
-      website: $("#website").val(),
-      description: $("#description").val()
-    };
+  if(hasPassword()) {
+    if(isNewPasswordMatch()) {
+      var editData = {
+        oldPassword: $("#oldPassword").val(),
+        newPassword: $("#newPassword").val(),
+        name: $("#companyName").val(),
+        address: $("#address").val(),
+        website: $("#website").val(),
+        description: $("#description").val()
+      };
 
-    $.post({
-      url: "/editEntrepreneurProfile",
-      data: JSON.stringify(editData),
-      success: function (data, response) {
-        if(response == "success") {
-          checkEditSuccess(data);
-        } else {
-          connectionError(response);
-        }
-      },
-      contentType: "application/json"
-    });
+      $.post({
+        url: "/editEntrepreneurProfile",
+        data: JSON.stringify(editData),
+        success: function (data, response) {
+          if(response == "success") {
+            checkEditSuccess(data);
+          } else {
+            connectionError(response);
+          }
+        },
+        contentType: "application/json"
+      });
+    } else {
+      alert("The new password you've entered does not match with the confirmation password.");
+      $("#oldPassword").val("");
+      $("#newPassword").val("");
+      $("#cfmPassword").val("");
+    }
   } else {
-    alert("The new password you've entered does not match with the confirmation password.");
-    $("#oldPassword").val("");
-    $("#newPassword").val("");
-    $("#cfmPassword").val("");
+    if(hasPassword() == false && hasEmptyPasswords()) {
+      alert("If you're intending to change your password, please complete the password fields.");
+      $("#oldPassword").val("");
+      $("#newPassword").val("");
+      $("#cfmPassword").val("");
+    }
   }
 }
 
@@ -117,16 +126,28 @@ function isNewPasswordMatch() {
   return true;
 }
 
-function hasPassword() {
+function hasEmptyPasswords() {
   var oldPassword = $("#oldPassword").val();
   var newPassword = $("#newPassword").val();
   var cfmPassword = $("#cfmPassword").val();
 
   if(oldPassword == "" && newPassword == "" && cfmPassword == "") {
-    return false;
+    return true;
   }
 
-  return true;
+  return false;
+}
+
+function hasPassword() {
+  var oldPassword = $("#oldPassword").val();
+  var newPassword = $("#newPassword").val();
+  var cfmPassword = $("#cfmPassword").val();
+
+  if(oldPassword != "" && newPassword != "" && cfmPassword != "") {
+    return true;
+  }
+
+  return false;
 }
 
 function checkEditSuccess(data) {
