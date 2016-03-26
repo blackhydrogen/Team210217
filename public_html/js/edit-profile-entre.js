@@ -4,29 +4,29 @@ function runOnLoad() {
 }
 
 function getUserDetails() {
-  var data = {
-    success: true,
-    name: "Hello Company",
-    address: "ABC Road",
-    website: "Helloworld.com",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-  };
-
-  displayUserDetails(JSON.stringify(data));
-  // $.post({
-  //   url: "/getUser",
-  //   data: JSON.stringify({
+  // var data = {
+  //   success: true,
+  //   name: "Hello Company",
+  //   address: "ABC Road",
+  //   website: "Helloworld.com",
+  //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  // };
   //
-  //   }),
-  //   success: function (data, response) {
-  //     if(response == "success") {
-  //       displayUserDetails(data);
-  //     } else {
-  //       connectionError(response);
-  //     }
-  //   },
-  //   contentType: "application/json"
-  // });
+  // displayUserDetails(JSON.stringify(data));
+  $.post({
+    url: "/getUser",
+    data: JSON.stringify({
+
+    }),
+    success: function (data, response) {
+      if(response == "success") {
+        displayUserDetails(data);
+      } else {
+        connectionError(response);
+      }
+    },
+    contentType: "application/json"
+  });
 }
 
 function displayUserDetails(data) {
@@ -89,18 +89,18 @@ function submitChanges() {
       description: $("#description").val()
     };
 
-    // $.post({
-    //   url: "/editEntrepreneurProfile",
-    //   data: JSON.stringify(editData),
-    //   success: function (data, response) {
-    //     if(response == "success") {
-    //       checkEditSuccess(data);
-    //     } else {
-    //       connectionError(response);
-    //     }
-    //   },
-    //   contentType: "application/json"
-    // });
+    $.post({
+      url: "/editEntrepreneurProfile",
+      data: JSON.stringify(editData),
+      success: function (data, response) {
+        if(response == "success") {
+          checkEditSuccess(data);
+        } else {
+          connectionError(response);
+        }
+      },
+      contentType: "application/json"
+    });
   } else {
     alert("The new password you've entered does not match with the confirmation password.");
     $("#oldPassword").val("");
