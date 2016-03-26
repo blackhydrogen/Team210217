@@ -36,7 +36,7 @@ function submitProjectDetails() {
 
 function goToProject(data) {
   var response = JSON.parse(data);
-  var params = "title=" + response.title + "&email=" + response.email;
+  var params = "title=" + response.title + "~~~~~email=" + response.email;
   window.location.href = "entre-project-detail.html?" + encodeURIComponent(params);
 }
 

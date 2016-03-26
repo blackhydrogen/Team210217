@@ -24,7 +24,7 @@ function getUrlParameters(parameter, staticURL, decode) {
   URL: www.code-tricks.com
   */
   var currLocation = (staticURL.length) ? staticURL : window.location.search,
-  parArr = decodeURIComponent(currLocation).split("?")[1].split("&"),
+  parArr = decodeURIComponent(currLocation).split("?")[1].split("~~~~~"),
   returnBool = true;
 
   for (var i = 0; i < parArr.length; i++) {

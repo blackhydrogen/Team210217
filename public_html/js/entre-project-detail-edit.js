@@ -94,7 +94,7 @@ function handleSaveDetailsResponse(data) {
 	if(response.success) {
 		var params = "title="
 			+ $(".lf-title input").val()
-			+ "&email="
+			+ "~~~~~email="
 			+ getUrlParameters("email", "", true);
 
 		window.location.href = "/secure/entre-project-detail.html?" + encodeURIComponent(params);

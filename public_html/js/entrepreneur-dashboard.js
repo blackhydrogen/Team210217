@@ -182,12 +182,12 @@ function displayNoProjects() {
 }
 
 function goToTransactionHistory(email, title) {
-  var params = "title=" + title + "&email=" + email;
+  var params = "title=" + title + "~~~~~email=" + email;
   window.location.href = "/secure/entre-project-transaction.html?" + encodeURIComponent(params);
 }
 
 function goToProject(title, email) {
-  var params = "title=" + title + "&email=" + email;
+  var params = "title=" + title + "~~~~~email=" + email;
 
   var html = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
 
