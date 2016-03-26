@@ -32,7 +32,8 @@ function handler(reql, resl) {
 		`SELECT t.id, t.title, t.entrepreneurEmail AS email, r.time, r.amount
 		FROM transaction t, refund r
 		WHERE t.patronEmail=$1
-		AND t.id = r.transactionId`,
+		AND t.id = r.transactionId
+		ORDER BY r.time`,
 		[email],
 		function(status) {	
 			if(!status.success) {
