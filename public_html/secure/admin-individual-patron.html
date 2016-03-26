@@ -31,7 +31,7 @@
 </head>
 
 
-<body>
+<body onload="runOnLoad()">
 
   <!-- Navigation -->
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -68,38 +68,32 @@
   </nav>
   
   <!--View to change the table the user wishes to pull-->
-  <div class="container">
-        <div class="card"></div>
-        <div class="card">
-            <h1 class="title">Choose Table</h1>
-            <form>
-                <div class="button-container">
-                    <button type="button" onclick="getEntreTable()"><span>Entrepreneur</span></button>
-                    <button type="button" onclick="getPatronTable()"><span>Patron</span></button>
-                </div>
-                <div id="projectBody"></div>
-            </form>
-        </div>
-    </div>
+  
 
   <!-- Page Content -->
   <div class="container">
-
     <!-- Page Heading/Breadcrumbs -->
-    <!--
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header">My Projects</h1>
+       <!-- NEED JAVASCRIPT HERE-->
+        <h1 class="page-header" id="email"></h1>
 
         <ol class="breadcrumb">
-          <li class="active">My Projects</li>
+          <li><a href="admin-dashboard.html">Patrons</a></li>
+          <li class="active" id="nameField"></li>
         </ol>
       </div>
-    </div> -->
+    </div> 
     <!-- /.row -->
 
     <!-- this is where the js html gets injected -->
-    <!--<div id="projectBody"></div> -->
+    <div>
+      <p><span class="editName">...</span></p>  
+    </div>
+    <button type="button" onclick="editProfile()">Edit</button>
+    <button type="button">Delete</button>
+    <div id="projectBody"></div>
+    <!--<div id="tables"></div>-->
 
     <!-- Pagination -->
     <div class="row text-center">
@@ -128,7 +122,7 @@
   <script src="/js/jquery.js"></script>
 
   <!-- personal js -->
-  <script src="/js/admin-dashboard.js"></script>
+  <script src="/js/admin-individual-patron.js"></script>
   <script src="/js/utils.js"></script>
 
   <!-- Bootstrap Core JavaScript -->
