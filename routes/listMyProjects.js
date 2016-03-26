@@ -40,24 +40,56 @@ function handler(reql, resl) {
 	responseObject.currentPage = page;
 	responseObject.projectsPerPage = projectsPerPage;
 
-	lfDatabase.executeTransaction([
+	var sqlTransaction = [];
+	if(filters.general) {
+		sqlTransaction.push(
+			`(
+				SELECT p.title, p.email, p.description, p.goal, p.start_time AS start, p.end_time AS end
+				FROM project p
+				WHERE (p.title, p.email) IN (
+					SELECT t.title, t.email
+					FROM tag t
+					WHERE LOWER(t.name) LIKE $1
+					AND email=$2
+				)
+			)
+			UNION
+			(
+				SELECT title, email, description, goal, start_time AS start, end_time AS end
+				FROM project
+				WHERE (LOWER(title) LIKE $1
+				OR LOWER(email) LIKE $1
+				OR LOWER(description) LIKE $1)
+				AND email=$2
+			)
+			ORDER BY title`
+		);
+		sqlTransaction.push(["%" + filters.general.toLowerCase() + "%", email]);
+	}
+	else {
+		sqlTransaction.push(
 			`SELECT title, description, goal, start_time AS start, end_time AS end FROM project
 			WHERE email=$1
-			ORDER BY title
-			OFFSET $2 LIMIT $3`,
-			[email, (page - 1) * projectsPerPage, projectsPerPage],
-			"SELECT COUNT(1) FROM project WHERE email=$1",
-			[email]
-		],
+			ORDER BY title`
+		);
+		sqlTransaction.push([email]);
+	}
+	
+	lfDatabase.executeTransaction(
+		sqlTransaction,
 		function(status) {
 			if(!status.success)
 				return lfTools.sendError(res, "An unexpected error occured.");
 			
-			responseObject.totalPage = Math.ceil(parseInt(status.result[1].rows[0].count) / projectsPerPage);
+			responseObject.totalPage = Math.ceil(status.result[0].rows.length / projectsPerPage);
 			
-			for(var i = 0; i < status.result[0].rows.length; i++) {
+			for(var i = 0; i < projectsPerPage; i++) {
+				var rowNumber = (page - 1) * projectsPerPage + i;
+				if(rowNumber >= status.result[0].rows.length)
+					break;
+				
 				var project = {};
-				var sqlRow = status.result[0].rows[i];
+				var sqlRow = status.result[0].rows[rowNumber];
 			
 				project.email = email;
 				project.title = sqlRow.title;
