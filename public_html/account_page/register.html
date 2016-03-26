@@ -67,8 +67,9 @@
             <h1 class="title">Register</h1>
             <form onsubmit="submitForm()">
                 <div class="button-container">
-                    <button type="button" onclick="entreRegistration()"><span>Entrepreneur</span></button>
-                    <button type="button" onclick="patronRegistration()"><span>Patron</span></button>
+                    <input type="submit" style="visibility: hidden;" />
+                    <button type="button" onclick="entreRegistration();"><span>Entrepreneur</span></button>
+                    <button type="button" onclick="patronRegistration();"><span>Patron</span></button>
                 </div>
                 <div id="registrationForm"></div>
             </form>
