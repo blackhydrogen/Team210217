@@ -1,5 +1,18 @@
 function logout() {
-  window.location.href = "/index.html";
+  $.post({
+    url: "/registerEntrepreneur",
+    data: JSON.stringify({
+      action: "logout"
+    }),
+    success: function (data, response) {
+      if(response == "success") {
+        window.location.href = "/index.html"
+      } else {
+        connectionError(response);
+      }
+    },
+    contentType: "application/json"
+  });
 }
 
 function getUrlParameters(parameter, staticURL, decode) {
