@@ -51,7 +51,7 @@ function connectionError(response) {
 
 function formatHtml(currPage, projects) {
   if (projects.length == 0) {
-    displayNoProjects();
+    return displayNoProjects();
   } else {
     var entireHTML = "";
 
@@ -143,13 +143,13 @@ function createPageNumberHTML(iter, currPage) {
 
 
 function displayNoProjects() {
-
+  return `<h1>No Projects to Display</h1>`;
 }
 
 function goToProject(title, email) {
   console.log(title);
   console.log(email);
-  var params = "title=" + title + "&email=" + email;
+  var params = "title=" + title + "~~~~~email=" + email;
 
   var html = "/secure/patron-project-detail.html?" + encodeURIComponent(params);
   console.log(html);
