@@ -100,13 +100,49 @@ function submitForm() {
 }
 
 function entreRegister() {
-  // calls the register api
-  // needs to watch out for
-  checkPasswordMatch("entrepreneur");
+  if(checkPasswordMatch("entrepreneur")) {
+    $.post({
+      url: "/registerEntrepreneur",
+      data: JSON.stringify({
+        username: $("#entreEmail").val(),
+        password: $("#entrePassword").val(),
+        name: $("#companyName").val(),
+        address: $("#entreAddress").val(),
+        website: $("#website").val(),
+        description: $("#description").val()
+      }),
+      success: function (data, response) {
+        if(response == "success") {
+          window.location.href = "/secure/entrepreneur-dashboard.html"
+        } else {
+          connectionError(response);
+        }
+      },
+      contentType: "application/json"
+    });
+  }
 }
 
 function patronRegister() {
   // calls the register api
+  if(checkPasswordMatch("patron")) {
+    $.post({
+      url: "/registerPatron",
+      data: JSON.stringify({
+        username: $("#patronEmail").val(),
+        password: $("#patronPassword").val(),
+        name: $("#name").val()
+      }),
+      success: function (data, response) {
+        if(response == "success") {
+          window.location.href = "/secure/patron-dashboard.html"
+        } else {
+          connectionError(response);
+        }
+      },
+      contentType: "application/json"
+    });
+  }
 }
 
 
@@ -119,6 +155,8 @@ function checkPasswordMatch(accountType) {
       alert("Passwords do not match!");
       $("#entrePassword").val("");
       $("#confirmEntrePassword").val("");
+
+      return false;
     }
   } else {
     var password = $("#patronPassword").val();
@@ -128,8 +166,12 @@ function checkPasswordMatch(accountType) {
       alert("Passwords do not match!");
       $("#patronPassword").val("");
       $("#confirmPatronPassword").val("");
+
+      return false;
     }
   }
+
+  return true;
 }
 
 var entrepreneur = false;
