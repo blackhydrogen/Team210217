@@ -34,7 +34,7 @@ function getProjectPeripheralDetails(projects, callback) {
 			for(var i = 0; i < projects.length; i++) {
 				projects[i].tags = status.result[i*3].rows[0].tags || "";
 				projects[i].name = status.result[i*3+1].rows[0].name || "";
-				projects[i].raised = status.result[i*3+2].rows[0].sum || 0;
+				projects[i].raised = parseFloat(status.result[i*3+2].rows[0].sum) || 0;
 			}
 			
 			callback(projects);
