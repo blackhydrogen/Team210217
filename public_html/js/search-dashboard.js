@@ -1,5 +1,70 @@
 function runOnLoad() {
+  createDynamicNavBar();
+  createSearchBar();
   getCurrentUser(displayBasedOnUser);
+}
+
+function createDynamicNavBar() {
+  getCurrentUser(function(data) {
+    if(typeof data == String) {
+      console.log("Error");
+    } else {
+      if(data.accountType == "entrepreneur") {
+        $("#navBar")
+        .append(`<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="entrepreneur-dashboard.html">Dashboard</a>
+            </li>
+            <li>
+              <a href="entrepreneur-new-project.html">New Project</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="entrepreneur-profile.html">My Profile</a>
+            </li>
+            <li>
+              <a href="edit-profile-entre.html">Edit Profile</a>
+            </li>
+            <li>
+              <a href="#" onclick="logout()">Logout</a>
+            </li>
+          </ul>
+        </li>`);
+      } else if(data.accountType == "patron") {
+        $("#navBar")
+        .append(`<li>
+            <a href="patron-dashboard.html" >Projects</a>
+        </li>
+        <li>
+            <a href="patron-donation.html" >My Donations</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>
+                  <a href="patron-profile.html">My Profile</a>
+                </li>
+                <li>
+                    <a href="patron-edit-profile.html">Edit Profile</a>
+                </li>
+                <li>
+                    <a href="#" onclick="logout()">Logout</a>
+                </li>
+
+            </ul>
+        </li>`);
+      } else if(data.accountType == "admin") {
+
+      }
+    }
+  });
 }
 
 function redirectToRespectiveHomepage() {
@@ -71,7 +136,7 @@ function displayHTML(accountType, data, searchTerm) {
       document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
       document.getElementById("pageHTML").innerHTML = paginationHTML;
     } else {
-      displayNoProjects();
+      displayNoProjects(searchTerm);
     }
   } else {
     alert(serverResponse.errorMessage);
@@ -194,6 +259,6 @@ function createPageNumberHTML(iter, currentPage, accountType, searchTerm) {
   }
 }
 
-function displayNoProjects() {
-  document.getElementById("projectBody").innerHTML = "<h3>There are no projects!</h3>";
+function displayNoProjects(searchTerm) {
+  document.getElementById("projectBody").innerHTML = `<h3>There are no projects by the term "` + searchTerm + `".</h3>`;
 }
