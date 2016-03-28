@@ -36,8 +36,14 @@ function submitProjectDetails() {
 
 function goToProject(data) {
   var response = JSON.parse(data);
-  var params = "title=" + response.title + "~~~~~email=" + response.email;
-  window.location.href = "entre-project-detail.html?" + encodeURIComponent(params);
+
+  if(response.success) {
+    var params = "title=" + response.title + "~~~~~email=" + response.email;
+    window.location.href = "entre-project-detail.html?" + encodeURIComponent(params);
+  } else {
+    alert(response.errorMessage);
+    window.location.href = "entrepreneur-new-project.html";
+  }
 }
 
 function getProjectDetails() {
