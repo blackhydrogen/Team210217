@@ -5,7 +5,6 @@ function runOnLoad() {
 
 function setStartDateLimit() {
   var tomorrow = new Date();
-  // tomorrow.setDate(tomorrow.getDate() + 1);
   var mth = ('0' + (tomorrow.getMonth() + 1)).slice(-2);
   var date = ("0" + tomorrow.getDate()).slice(-2);
   var tmrString = tomorrow.getFullYear() + "-" + mth + "-" + date;
@@ -17,18 +16,18 @@ function submitProjectDetails() {
   if(validateProjectDetails()) {
     var details = getProjectDetails();
 
-    // $.post({
-    //   url: "/createProject",
-    //   data: JSON.stringify(details),
-    //   success: function (data, response) {
-    //     if (response == "success") {
-    //       goToProject(data)
-    //     } else {
-    //       connectionError(response);
-    //     }
-    //   },
-    //   contentType: "application/json"
-    // });
+    $.post({
+      url: "/createProject",
+      data: JSON.stringify(details),
+      success: function (data, response) {
+        if (response == "success") {
+          goToProject(data)
+        } else {
+          connectionError(response);
+        }
+      },
+      contentType: "application/json"
+    });
 
   } else {
     return false;
@@ -37,7 +36,7 @@ function submitProjectDetails() {
 
 function goToProject(data) {
   var response = JSON.parse(data);
-  var params = "title=" + response.title + "&email=" + response.email;
+  var params = "title=" + response.title + "~~~~~email=" + response.email;
   window.location.href = "entre-project-detail.html?" + encodeURIComponent(params);
 }
 

@@ -22,7 +22,7 @@ function patronRegistration() {
 
 function createPatronRegistrationHTML() {
   var emailHTML = `<div class="input-container">
-                      <input type="text" id="patronEmail" required="required" />
+                      <input type="email" id="patronEmail" required="required" />
                       <label for="userEmail">Email</label>
                       <div class="bar"></div>
                   </div>`;
@@ -42,7 +42,7 @@ function createPatronRegistrationHTML() {
                       <div class="bar"></div>
                   </div>`;
   var registerButton = `<div class="button-container">
-                            <button onclick="patronRegister()"><span>Register</span></button>
+                            <button onclick="patronRegister(); return false;"><span>Register</span></button>
                         </div>`;
 
   return emailHTML + passwordHTML + confirmPassword + nameHTML + registerButton;
@@ -50,7 +50,7 @@ function createPatronRegistrationHTML() {
 
 function createEntreRegistrationHTML() {
   var emailHTML = `<div class="input-container">
-                      <input type="text" id="entreEmail" required="required" />
+                      <input type="email" id="entreEmail" required="required" />
                       <label for="entreEmail">Email</label>
                       <div class="bar"></div>
                   </div>`;
@@ -85,7 +85,7 @@ function createEntreRegistrationHTML() {
                             <div class="bar"></div>
                         </div>`;
   var registerButton = `<div class="button-container">
-                            <button onclick="entreRegister()"><span>Register</span></button>
+                            <button onclick="entreRegister(); return false;"><span>Register</span></button>
                         </div>`;
 
   return emailHTML + passwordHTML + confirmPassword + companyName + addressHTML + websiteHTML + descriptionHTML + registerButton;
@@ -100,13 +100,60 @@ function submitForm() {
 }
 
 function entreRegister() {
-  // calls the register api
-  // needs to watch out for
-  checkPasswordMatch("entrepreneur");
+  if(checkPasswordMatch("entrepreneur")) {
+    $.post({
+      url: "/registerEntrepreneur",
+      data: JSON.stringify({
+        username: $("#entreEmail").val(),
+        password: $("#entrePassword").val(),
+        name: $("#companyName").val(),
+        address: $("#entreAddress").val(),
+        website: $("#website").val(),
+        description: $("#description").val()
+      }),
+      success: function (data, response) {
+        if(response == "success") {
+          var serverResponse = JSON.parse(data);
+          console.log(serverResponse);
+          if(serverResponse.success) {
+            window.location.href = "/secure/entrepreneur-dashboard.html";
+          } else {
+            responseError(serverResponse.errorMessage);
+          }
+        } else {
+          connectionError(response);
+        }
+      },
+      contentType: "application/json"
+    });
+  }
 }
 
 function patronRegister() {
   // calls the register api
+  if(checkPasswordMatch("patron")) {
+    $.post({
+      url: "/registerPatron",
+      data: JSON.stringify({
+        username: $("#patronEmail").val(),
+        password: $("#patronPassword").val(),
+        name: $("#name").val()
+      }),
+      success: function (data, response) {
+        if(response == "success") {
+          var serverResponse = JSON.parse(data);
+          if(serverResponse.success) {
+            window.location.href = "/secure/patron-dashboard.html";
+          } else {
+            responseError(serverResponse.errorMessage);
+          }
+        } else {
+          connectionError(response);
+        }
+      },
+      contentType: "application/json"
+    });
+  }
 }
 
 
@@ -119,6 +166,8 @@ function checkPasswordMatch(accountType) {
       alert("Passwords do not match!");
       $("#entrePassword").val("");
       $("#confirmEntrePassword").val("");
+
+      return false;
     }
   } else {
     var password = $("#patronPassword").val();
@@ -128,8 +177,16 @@ function checkPasswordMatch(accountType) {
       alert("Passwords do not match!");
       $("#patronPassword").val("");
       $("#confirmPatronPassword").val("");
+
+      return false;
     }
   }
+
+  return true;
+}
+
+function responseError(errorMessage) {
+  alert(errorMessage);
 }
 
 var entrepreneur = false;
