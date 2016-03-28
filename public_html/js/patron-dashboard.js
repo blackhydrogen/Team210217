@@ -54,10 +54,15 @@ function formatHtml(currPage, projects) {
     return displayNoProjects();
   } else {
     var entireHTML = "";
-
-    for (var i = 0; i < projects.length-1; i+=2) {
+    console.log(projects);
+    for (var i = 0; i < projects.length; i+=2) {
       var html = createItemHtml(currPage, i, projects[i]);
-      var html2 = createItemHtml(currPage, i, projects[i+1]);
+      if(!((i+1) >= projects.length)){
+        var html2 = createItemHtml(currPage, i, projects[i+1]);
+      }
+      else{
+        var html2 = "";
+      }
 
       entireHTML = entireHTML + `<div class="row">` + html + html2 + `</div><hr>`;
     }
@@ -102,7 +107,7 @@ function createPaginationHTML(currPage, totPage){
 
   if(currPage < totPage) {
     rightStr = `<li>
-                    <a href="#" onclick=getAllProjects(`+ (currPage + 1) + `)>&laquo;</a>
+                    <a href="#" onclick=getAllProjects(`+ (currPage + 1) + `)>&raquo;</a>
                 </li>`;
   }
 
