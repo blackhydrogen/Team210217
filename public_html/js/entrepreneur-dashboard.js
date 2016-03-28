@@ -138,7 +138,7 @@ function createPaginationHTML(currPage, totPage) {
 
   if(currPage < totPage) {
     rightStr = `<li>
-                    <a href="#" onclick=getAllProjects(`+ (currPage + 1) + `)>&laquo;</a>
+                    <a href="#" onclick=getAllProjects(`+ (currPage + 1) + `)>&raquo;</a>
                 </li>`;
   }
 

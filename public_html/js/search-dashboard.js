@@ -221,7 +221,7 @@ function createPaginationHTML(currentPage, totalPage, accountType, searchTerm) {
 
   if(currentPage < totalPage) {
     rightStr = `<li>
-                    <a href="#" onclick=searchAndDisplay(`+ (currentPage + 1) + `,'` + searchTerm + `','` + accountType + `')>&laquo;</a>
+                    <a href="#" onclick=searchAndDisplay(`+ (currentPage + 1) + `,'` + searchTerm + `','` + accountType + `')>&raquo;</a>
                 </li>`;
   }
 
