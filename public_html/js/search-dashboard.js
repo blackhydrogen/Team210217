@@ -1,7 +1,5 @@
 function runOnLoad() {
   createDynamicNavBar();
-  createSearchBar();
-  getCurrentUser(displayBasedOnUser);
 }
 
 function createDynamicNavBar() {
@@ -63,6 +61,9 @@ function createDynamicNavBar() {
       } else if(data.accountType == "admin") {
 
       }
+
+      createSearchBar();
+      getCurrentUser(displayBasedOnUser)
     }
   });
 }
