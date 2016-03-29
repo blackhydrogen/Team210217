@@ -262,13 +262,13 @@ function goToEditProfile(){
 function goToTransactionHistory(email, title) {
   var params = "title=" + title + "~~~~~email=" + email;
   //need to implement this page for the admin to entre
-  //window.location.href = "/secure/entre-project-transaction.html?" + encodeURIComponent(params);
+  window.location.href = "/secure/admin-entre-project-transaction.html?" + encodeURIComponent(params);
 }
 
 function goToProject(title, email) {
   var params = "title=" + title + "~~~~~email=" + email;
   //need to implement this page for the admin to entre
-  //var html = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
+  var html = "/secure/admin-project-detail.html?" + encodeURIComponent(params);
 
   window.location.href = html;
 }
