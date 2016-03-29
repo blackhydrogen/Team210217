@@ -20,7 +20,15 @@ function populateNameFields(email, name){
 
   $(".editName")
   .empty()
-  .append(createTextInput(name, "editName"));
+  .append("Name: ",createTextInput(name, "editName"));
+
+  $(".editNewPassword")
+  .empty()
+  .append("New Password: ", createPasswordField("editNewPassword"));
+
+  $(".confirmNewPassword")
+  .empty()
+  .append("Confirmed Password: ", createPasswordField("confirmNewPassword"))
 }
 
 function getPatronDetail(){
@@ -69,35 +77,86 @@ function connectionError(response) {
 }
 
 function createTextInput(holder, id) {
- return $(`<input type="text" style="width: 500px" id="` + id + `" />`).val(holder);
+ return $(`<input type="text" id="` + id + `" />`).val(holder);
+}
+
+function createPasswordField(id) {
+  return `<input type="password" id="` + id + `">`;
 }
 
 function editProfile(){
   var email = getUrlParameters("email", "", true);
 
-  $.post({
-        url: "/editPatronProfile",
-        data: JSON.stringify({
-            email: email,
-            name: $("#editName").val()
+  if(hasPassword() || hasEmptyPassword()){
+    if(isNewPasswordMatch()){
+      var data = {
+        email: email,
+        newPassword: $("#editNewPassword").val(),
+        name: $("#editName").val()
+      }
 
-        }),
-        success: function (data, response) {
-            if (response == "success") {
-              var dbResponse = JSON.parse(data);
-              if(dbResponse.success){
-                alert("Name changed");
-                window.location.href = "/secure/admin-individual-patron.html?" + encodeURIComponent("email=" + email);
-              } else {
-                alert("DB ERROR");
-              }
-            } else {
-                connectionError(response);
-            }
-        },
-        contentType: "application/json"
-    });
+      $.post({
+            url: "/editPatronProfile",
+            data: JSON.stringify(data),
+            success: function (data, response) {
+                if (response == "success") {
+                  var dbResponse = JSON.parse(data);
+                  if(dbResponse.success){
+                    alert("Details have been changed");
+                    window.location.href = "/secure/admin-individual-patron.html?" + encodeURIComponent("email=" + email);
+                  } else {
+                    alert("DB ERROR");
+                  }
+                } else {
+                    connectionError(response);
+                }
+            },
+            contentType: "application/json"
+        });
+    }
+    else{
+      alert("The new password you've entered does not match with the confirmation password.");
 
+      $("#editNewPassword").val("");
+      $("#confirmNewPassword").val("");
+    }
+  }
+  else{
+    alert("If you're intending to change password, please complete the password fields.");
+    $("#editNewPassword").val("");
+    $("#confirmNewPassword").val("");
+  }
+
+}
+
+function isNewPasswordMatch() {
+  if($("#editNewPassword").val() != $("#confirmNewPassword").val()) {
+    return false;
+  }
+
+  return true;
+}
+
+function hasEmptyPasswords(){
+  var newPassword = $("#editNewPassword").val();
+  var cfmPassword = $("#confirmNewPassword").val();
+
+  if(newPassword == "" && cfmPassword == "") {
+    return true;
+  }
+
+  return false;
+}
+
+function hasPassword() {
+  var newPassword = $("#editNewPassword").val();
+  var cfmPassword = $("#confirmNewPassword").val();
+
+  if(newPassword != "" && cfmPassword != "") {
+    return true;
+  }
+
+  return false;
 }
 
 function getRefundHistory(){

@@ -1,5 +1,4 @@
 function runOnLoad() {
-  createSearchBar();
   getUserDetailsAndDisplay();
 }
 
