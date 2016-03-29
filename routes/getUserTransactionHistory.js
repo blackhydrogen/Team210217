@@ -28,22 +28,26 @@ function handler(reql, resl) {
 		return lfTools.sendError(res, "Invalid user.");
 	}
 	
-	lfDatabase.executeTransaction([
-			`SELECT id, title, entrepreneurEmail AS email, time, amount
+	lfDatabase.executeSQL(
+		`(
+			SELECT id, title, entrepreneurEmail AS email, time, amount, TRUE AS refundable
 			FROM transaction
 			WHERE patronEmail=$1
 			AND id NOT IN (
 				SELECT transactionId FROM refund
-			)`,
-			[email],
-			`SELECT id, title, entrepreneurEmail AS email, time, amount
+			)
+		)
+		UNION
+		(
+			SELECT id, title, entrepreneurEmail AS email, time, amount, FALSE AS refundable
 			FROM transaction
 			WHERE patronEmail=$1
 			AND id IN (
 				SELECT transactionId FROM refund
-			)`,
-			[email]
-		],
+			)
+		)
+		ORDER BY time`,
+		[email],
 		function(status) {	
 			if(!status.success) {
 				return lfTools.sendError(res, "Unexpected error occured.");
@@ -51,18 +55,13 @@ function handler(reql, resl) {
 			
 			responseObject.transactions = [];
 			
-			for(var i = 0; i < status.result[0].rows.length; i++) {
-				status.result[0].rows[i].time = status.result[0].rows[i].time.getTime();
-				status.result[0].rows[i].amount = parseFloat(status.result[0].rows[i].amount);
-				status.result[0].rows[i].isRefundable = true;
-				responseObject.transactions.push(status.result[0].rows[i]);
-			}
-			
-			for(var i = 0; i < status.result[1].rows.length; i++) {
-				status.result[1].rows[i].time = status.result[1].rows[i].time.getTime();
-				status.result[1].rows[i].amount = parseFloat(status.result[1].rows[i].amount);
-				status.result[1].rows[i].isRefundable = false;
-				responseObject.transactions.push(status.result[1].rows[i]);
+			for(var i = 0; i < status.result.rows.length; i++) {
+				status.result.rows[i].time = status.result.rows[i].time.getTime();
+				status.result.rows[i].amount = parseFloat(status.result.rows[i].amount);
+				status.result.rows[i].isRefundable = status.result.rows[i].refundable;
+				status.result.rows[i].refundable = undefined;
+				
+				responseObject.transactions.push(status.result.rows[i]);
 			}
 			
 			lfTools.sendResponse(res, responseObject);

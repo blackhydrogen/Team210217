@@ -16,11 +16,19 @@ function handler(reql, resl) {
 	if(!lfTools.requestObjectIsValid(requestObject))
 		return;
 	
-	if(!req.session.type) {
-		return lfTools.sendError(res, "You need to be logged in.");
+	var email = requestObject.email;
+	
+	if(req.session.type == "admin") {
+		//ok, do nothing
+	}
+	else if(req.session.type == "entrepreneur") {
+		if(email != req.session.email)
+			return lfTools.sendError(res, "Invalid account! You're not the owner.")
+	}
+	else {
+		return lfTools.sendError(res, "Invalid account!");
 	}
 	
-	var email = requestObject.email;
 	var title = requestObject.title;
 	
 	lfDatabase.executeSQL(
@@ -28,7 +36,8 @@ function handler(reql, resl) {
 		FROM transaction t, refund r
 		WHERE t.entrepreneurEmail=$1
 		AND t.title=$2
-		AND t.id = r.transactionId`,
+		AND t.id = r.transactionId
+		ORDER BY r.time`,
 		[email, title],
 		function(status) {	
 			if(!status.success) {
