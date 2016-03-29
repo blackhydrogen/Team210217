@@ -7,21 +7,21 @@ function getProjectDetails() {
   var title = getUrlParameters("title", "", true);
   var email = getUrlParameters("email", "", true);
 
-  // $.post({
-  //     url: "/getProjectDetails",
-  //     data: JSON.stringify({
-  //         title: title,
-  //         email: email
-  //     }),
-  //     success: function (data, response) {
-  //         if (response == "success") {
-  //             displayProject(data);
-  //         } else {
-  //             connectionError(response);
-  //         }
-  //     },
-  //     contentType: "application/json"
-  // });
+  $.post({
+      url: "/getProjectDetails",
+      data: JSON.stringify({
+          title: title,
+          email: email
+      }),
+      success: function (data, response) {
+          if (response == "success") {
+              displayProject(data);
+          } else {
+              connectionError(response);
+          }
+      },
+      contentType: "application/json"
+  });
 }
 
 function displayProject(data) {
@@ -94,7 +94,7 @@ function handleSaveDetailsResponse(data) {
 	if(response.success) {
 		var params = "title="
 			+ $(".lf-title input").val()
-			+ "&email="
+			+ "~~~~~email="
 			+ getUrlParameters("email", "", true);
 
 		window.location.href = "/secure/entre-project-detail.html?" + encodeURIComponent(params);

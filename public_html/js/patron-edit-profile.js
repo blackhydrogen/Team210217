@@ -4,26 +4,26 @@ function runOnLoad() {
 }
 
 function getUserDetails() {
-  var data = {
-    success: true,
-    name: "Hello Company"
-  };
-
-  displayUserDetails(JSON.stringify(data));
-  // $.post({
-  //   url: "/getUser",
-  //   data: JSON.stringify({
+  // var data = {
+  //   success: true,
+  //   name: "Hello Company"
+  // };
   //
-  //   }),
-  //   success: function (data, response) {
-  //     if(response == "success") {
-  //       displayUserDetails(data);
-  //     } else {
-  //       connectionError(response);
-  //     }
-  //   },
-  //   contentType: "application/json"
-  // });
+  // displayUserDetails(JSON.stringify(data));
+  $.post({
+    url: "/getUser",
+    data: JSON.stringify({
+
+    }),
+    success: function (data, response) {
+      if(response == "success") {
+        displayUserDetails(data);
+      } else {
+        connectionError(response);
+      }
+    },
+    contentType: "application/json"
+  });
 }
 
 function displayUserDetails(data) {
@@ -64,31 +64,40 @@ function createTextInput(holder, id) {
 }
 
 function submitChanges() {
-  if(isNewPasswordMatch()) {
-    var editData = {
-      oldPassword: $("#oldPassword").val(),
-      newPassword: $("#newPassword").val(),
-      name: $("#patronName").val()
-    };
+  if(hasPassword() || hasEmptyPasswords()){
+    if(isNewPasswordMatch()) {
+      var editData = {
+        oldPassword: $("#oldPassword").val(),
+        newPassword: $("#newPassword").val(),
+        name: $("#patronName").val()
+      };
 
-    // $.post({
-    //   url: "/editPatronProfile",
-    //   data: JSON.stringify(editData),
-    //   success: function (data, response) {
-    //     if(response == "success") {
-    //       checkEditSuccess(data);
-    //     } else {
-    //       connectionError(response);
-    //     }
-    //   },
-    //   contentType: "application/json"
-    // });
-  } else {
-    alert("The new password you've entered does not match with the confirmation password.");
-    $("#oldPassword").val("");
+      $.post({
+        url: "/editPatronProfile",
+        data: JSON.stringify(editData),
+        success: function (data, response) {
+          if(response == "success") {
+            checkEditSuccess(data);
+          } else {
+            connectionError(response);
+          }
+        },
+        contentType: "application/json"
+      });
+    } else {
+      alert("The new password you've entered does not match with the confirmation password.");
+      $("#oldPassword").val("");
+      $("#newPassword").val("");
+      $("#cfmPassword").val("");
+    }
+  }
+  else{
+    alert("If you're intending to change password, please complete the password fields.");
+    $('#oldPassword').val("");
     $("#newPassword").val("");
     $("#cfmPassword").val("");
   }
+
 }
 
 function isNewPasswordMatch() {
@@ -99,16 +108,28 @@ function isNewPasswordMatch() {
   return true;
 }
 
-function hasPassword() {
+function hasEmptyPasswords(){
   var oldPassword = $("#oldPassword").val();
   var newPassword = $("#newPassword").val();
   var cfmPassword = $("#cfmPassword").val();
 
   if(oldPassword == "" && newPassword == "" && cfmPassword == "") {
-    return false;
+    return true;
   }
 
-  return true;
+  return false;
+}
+
+function hasPassword() {
+  var oldPassword = $("#oldPassword").val();
+  var newPassword = $("#newPassword").val();
+  var cfmPassword = $("#cfmPassword").val();
+
+  if(oldPassword != "" && newPassword != "" && cfmPassword != "") {
+    return true;
+  }
+
+  return false;
 }
 
 function checkEditSuccess(data) {

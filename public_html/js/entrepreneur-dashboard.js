@@ -10,54 +10,54 @@ function runOnLoad() {
 }
 
 function getAllProjects(pageNumber) {
-  var data = {
-    success: true,
-    errorMessage: "",
-    currentPage: 3,
-    totalPage: 7,
-    projectsPerPage: 10,
-    projects: [
-      { //first project
-        title: "Project 1",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        goal: 100,
-        raised: 50,
-        start: "20 Jan 2016",
-        end: "30 Jan 2016",
-        tags: ["Music", "IT", "Cars"],
-        email: "abc@abc.com",
-        name: "ABC"
-      },
-      { //second project
-        title: "Project 1",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        goal: 100,
-        raised: 50,
-        start: "20 Jan 2016",
-        end: "30 Jan 2016",
-        tags: ["Music", "IT", "Cars"],
-        email: "abc@abc.com",
-        name: "ABC"
-      }
-    ]
-  }
-
-  displayProjects(JSON.stringify(data));
-
-  // $.post({
-  //   url: "/listMyProjects",
-  //   data: JSON.stringify({
-  //     page: pageNumber
-  //   }),
-  //   success: function (data, response) {
-  //     if (response == "success") {
-  //       displayProjects(data);
-  //     } else {
-  //       connectionError(response);
+  // var data = {
+  //   success: true,
+  //   errorMessage: "",
+  //   currentPage: 3,
+  //   totalPage: 7,
+  //   projectsPerPage: 10,
+  //   projects: [
+  //     { //first project
+  //       title: "Project 1",
+  //       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  //       goal: 100,
+  //       raised: 50,
+  //       start: "20 Jan 2016",
+  //       end: "30 Jan 2016",
+  //       tags: ["Music", "IT", "Cars"],
+  //       email: "abc@abc.com",
+  //       name: "ABC"
+  //     },
+  //     { //second project
+  //       title: "Project 1",
+  //       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  //       goal: 100,
+  //       raised: 50,
+  //       start: "20 Jan 2016",
+  //       end: "30 Jan 2016",
+  //       tags: ["Music", "IT", "Cars"],
+  //       email: "abc@abc.com",
+  //       name: "ABC"
   //     }
-  //   },
-  //   contentType: "application/json"
-  // });
+  //   ]
+  // }
+  //
+  // displayProjects(JSON.stringify(data));
+
+  $.post({
+    url: "/listMyProjects",
+    data: JSON.stringify({
+      page: pageNumber
+    }),
+    success: function (data, response) {
+      if (response == "success") {
+        displayProjects(data);
+      } else {
+        connectionError(response);
+      }
+    },
+    contentType: "application/json"
+  });
 }
 
 function displayProjects(data) {
@@ -68,12 +68,14 @@ function displayProjects(data) {
     var totalPage = serverResponse.totalPage;
     var projects = serverResponse.projects;
 
-    var htmlToBeDisplayed = formatHtml(currentPage, projects);
-    var paginationHTML = createPaginationHTML(currentPage, totalPage);
-
-    document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
-    document.getElementById("pageHTML").innerHTML = paginationHTML;
-
+    if(projects.length != 0) {
+      var htmlToBeDisplayed = formatHtml(projects);
+      var paginationHTML = createPaginationHTML(currentPage, totalPage);
+      document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
+      document.getElementById("pageHTML").innerHTML = paginationHTML;
+    } else {
+      displayNoProjects();
+    }
   } else {
     console.log(serverResponse.errorMessage);
   }
@@ -83,14 +85,14 @@ function connectionError(response) {
   console.log(response);
 }
 
-function formatHtml(currPage, projects) {
+function formatHtml(projects) {
   if (projects.length == 0) {
     displayNoProjects();
   } else {
     var entireHTML = "";
 
     for (var i = 0; i < projects.length; i++) {
-      var html = createItemHtml(currPage, projects[i]);
+      var html = createItemHtml(projects[i]);
 
       entireHTML = entireHTML + html;
     }
@@ -99,7 +101,7 @@ function formatHtml(currPage, projects) {
   return entireHTML;
 }
 
-function createItemHtml(page, project) {
+function createItemHtml(project) {
   var description = project.description;
   if(description.length > 400) {
     description = description.substring(0, 399);
@@ -136,7 +138,7 @@ function createPaginationHTML(currPage, totPage) {
 
   if(currPage < totPage) {
     rightStr = `<li>
-                    <a href="#" onclick=getAllProjects(`+ (currPage + 1) + `)>&laquo;</a>
+                    <a href="#" onclick=getAllProjects(`+ (currPage + 1) + `)>&raquo;</a>
                 </li>`;
   }
 
@@ -176,16 +178,16 @@ function createPageNumberHTML(iter, currPage) {
 }
 
 function displayNoProjects() {
-
+  document.getElementById("projectBody").innerHTML = "<h3>You do not have any projects!</h3>";
 }
 
 function goToTransactionHistory(email, title) {
-  var params = "title=" + title + "&email=" + email;
+  var params = "title=" + title + "~~~~~email=" + email;
   window.location.href = "/secure/entre-project-transaction.html?" + encodeURIComponent(params);
 }
 
 function goToProject(title, email) {
-  var params = "title=" + title + "&email=" + email;
+  var params = "title=" + title + "~~~~~email=" + email;
 
   var html = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
 

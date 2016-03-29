@@ -1,5 +1,18 @@
 function logout() {
-  window.location.href = "/index.html";
+  $.post({
+    url: "/registerEntrepreneur",
+    data: JSON.stringify({
+      action: "logout"
+    }),
+    success: function (data, response) {
+      if(response == "success") {
+        window.location.href = "/index.html"
+      } else {
+        connectionError(response);
+      }
+    },
+    contentType: "application/json"
+  });
 }
 
 function getUrlParameters(parameter, staticURL, decode) {
@@ -11,7 +24,7 @@ function getUrlParameters(parameter, staticURL, decode) {
   URL: www.code-tricks.com
   */
   var currLocation = (staticURL.length) ? staticURL : window.location.search,
-  parArr = decodeURIComponent(currLocation).split("?")[1].split("&"),
+  parArr = decodeURIComponent(currLocation).split("?")[1].split("~~~~~"),
   returnBool = true;
 
   for (var i = 0; i < parArr.length; i++) {
@@ -43,5 +56,23 @@ function createSearchBar() {
 }
 
 function performSearch() {
-  console.log($("#searchInput").val());
+  var searchInput = $("#searchInput").val();
+  window.location.href = "/secure/search-dashboard.html?" + encodeURIComponent("search=" + searchInput);
+}
+
+function getCurrentUser(callback) {
+  $.post({
+    url: "/getUser",
+    data: JSON.stringify({
+    }),
+    success: function (data, response) {
+      if(response == "success") {
+        var serverResponse = JSON.parse(data);
+        callback(serverResponse);
+      } else {
+        return "error";
+      }
+    },
+    contentType: "application/json"
+  });
 }

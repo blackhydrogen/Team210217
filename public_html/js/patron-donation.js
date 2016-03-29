@@ -28,7 +28,7 @@ function displayTransactionHist(data) {
   var serverResponse = JSON.parse(data);
 
   if (serverResponse.success == true) {
-    var transaction = serverResponse.transaction;
+    var transaction = serverResponse.transactions;
     var htmlToBeDisplayed = formatHtml(transaction);
 
     document.getElementById("transactionBody").innerHTML = htmlToBeDisplayed;
@@ -60,20 +60,30 @@ function formatHtml(transaction) {
 }
 
 function createItemHtml(transaction) {
-  var title = transaction.title;
-  var email = transaction.email;
-  var date = transaction.date;
-  var amount = transaction.amount;
+  var date = new Date(transaction.time);
+  var year = date.getFullYear();
+  var month = date.getMonth()+1;
+  var date2 = date.getDate();
+  var hour = date.getHours();
+  var minute = date.getMinutes();
 
   var html2 = `
     <tr>
+      <td>`+ transaction.id + `</td>
       <td>` + transaction.title + `</td>
       <td>` + transaction.email + `</td>
-      <td>` + transaction.date + `</td>
+      <td>` + date2 + `/` + month + `/` + year + `&nbsp;` + addZero(hour) + `:` + addZero(minute) + `</td>
       <td>` + transaction.amount + `</td>
     </tr>
   `;
   return html2;
+}
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
 }
 
 function displayNoTransaction() {

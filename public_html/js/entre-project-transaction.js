@@ -4,43 +4,43 @@ function runOnLoad() {
 }
 
 function displayTransactionDetails() {
-  // var title = getUrlParameters("title", "", true);
-  // var email = getUrlParameters("email", "", true);
-  //
-  // $.post({
-  //   url: "/getProjectTransactionHistory",
-  //   data: JSON.stringify({
-  //     email: email,
-  //     title: title
-  //   }),
-  //   success: function(data, response) {
-  //     if(response == "success") {
-  //       displayTransactionHistory(data, title, email);
-  //     } else {
-  //       connectionError(response);
-  //     }
-  //   },
-  //   contentType: "application/json"
-  // });
+  var title = getUrlParameters("title", "", true);
+  var email = getUrlParameters("email", "", true);
 
-  var email = "leon@abc.com";
-  var title = "First Project";
-  var data = {
-    transactions: [
-      {
-        email: "abc@123.com",
-        amount: 50,
-        date: "23 Jan 2016"
-      },
-      {
-        email: "leon@123.com",
-        amount: 100,
-        date: "28 Jan 2016"
+  $.post({
+    url: "/getProjectTransactionHistory",
+    data: JSON.stringify({
+      email: email,
+      title: title
+    }),
+    success: function(data, response) {
+      if(response == "success") {
+        displayTransactionHistory(data, title, email);
+      } else {
+        connectionError(response);
       }
-    ]
-  };
+    },
+    contentType: "application/json"
+  });
 
-  displayTransactionHistory(JSON.stringify(data), title, email);
+  // var email = "leon@abc.com";
+  // var title = "First Project";
+  // var data = {
+  //   transactions: [
+  //     {
+  //       email: "abc@123.com",
+  //       amount: 50,
+  //       date: "23 Jan 2016"
+  //     },
+  //     {
+  //       email: "leon@123.com",
+  //       amount: 100,
+  //       date: "28 Jan 2016"
+  //     }
+  //   ]
+  // };
+  //
+  // displayTransactionHistory(JSON.stringify(data), title, email);
 
 }
 
