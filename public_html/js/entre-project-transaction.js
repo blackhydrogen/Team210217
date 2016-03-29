@@ -68,7 +68,7 @@ function createRowsHTML(transactions) {
     html = html + `<td>` + (i + 1) + `</td>`;
     html = html + `<td><a href="#" onclick="goToUser('` + transactions[i].email + `')">` + transactions[i].email + `</a></td>`;
     html = html + `<td>` + transactions[i].amount + `</td>`;
-    html = html + `<td>` + transactions[i].date + `</td>`;
+    html = html + `<td>` + new Date(transactions[i].time) + `</td>`;
     html = html + "</tr>";
   }
 
@@ -81,7 +81,7 @@ function goToUser(email) {
 }
 
 function backToProject() {
-  window.location.href = "/secure/entre-project-detail.html?" + window.location.search;
+  window.location.href = "/secure/entre-project-detail.html" + window.location.search;
 }
 
 function connectionError(errorMessage) {
