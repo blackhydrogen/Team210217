@@ -67,7 +67,10 @@ function createTags(tags) {
   arrayTags = arrayTags.split(",");
 
   for (var i = 0; i < arrayTags.length; i++) {
-    html = html + `<button type="button" class="btn btn-info btn-sm">`+ arrayTags[i] +`</button>`;
+    if(i != 0) {
+      html = html + ", "
+    }
+    html = html + arrayTags[i];
   }
 
   return html;
