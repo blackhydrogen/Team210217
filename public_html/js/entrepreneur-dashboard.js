@@ -181,7 +181,7 @@ function displayNoProjects() {
   document.getElementById("projectBody").innerHTML = "<h3>You do not have any projects!</h3>";
 }
 
-function goToTransactionHistory(email, title) {
+function goToTransactionHistory(title, email) {
   var params = "title=" + title + "~~~~~email=" + email;
   window.location.href = "/secure/entre-project-transaction.html?" + encodeURIComponent(params);
 }
