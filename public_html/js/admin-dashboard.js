@@ -15,7 +15,7 @@ function getEntreTable(){
     contentType: "application/json"
   });
 
-  /*var data = { 
+  /*var data = {
 
     success: true,
     errorMessage: "error lor",
@@ -45,7 +45,7 @@ function createEntreRegistrationHTML(data) {
   if (serverResponse.success == true) {
     var users = serverResponse.users;
 
-    
+
     var htmlToBeDisplayed = extractEntreTable(users);
 
     document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
@@ -86,7 +86,7 @@ function listEntre(users, num){
   var tableHTML =`
     <tr>
       <th scope="row">` + num + `</th>
-      <td onmouseover="" style="cursor: pointer;" onclick="goToEntreUsers('` + users.email + `')">` + users.email + `</td>
+      <td><a href="#" onclick="goToEntreUsers('` + users.email + `')">` + users.email + `</a></td>
       <td>`+ users.name +`</td>
     </tr>`
 
@@ -104,7 +104,7 @@ function goToEntreUsers(email) {
   window.location.href = html;
 }
 
-//Patron table code 
+//Patron table code
 
 function getPatronTable(){
  $.post({
@@ -121,7 +121,7 @@ function getPatronTable(){
     contentType: "application/json"
   });
 
-  /*var data = { 
+  /*var data = {
 
     success: true,
     errorMessage: "error lor",
@@ -165,7 +165,7 @@ function listPatron(users, num){
   var tableHTML =`
     <tr>
       <th scope="row">` + num + `</th>
-      <td onmouseover="" style="cursor: pointer;" onclick="goToPatUsers('` + users.email +`')">` + users.email + `</td>
+      <td><a href="#" onclick="goToPatUsers('` + users.email + `')">` + users.email + `</a></td>
       <td>`+ users.name +`</td>
     </tr>`
 
@@ -204,7 +204,7 @@ function createPatronRegistrationHTML(data) {
   if (serverResponse.success == true) {
     var users = serverResponse.users;
 
-    
+
     var htmlToBeDisplayed = extractPatronTable(users);
 
     document.getElementById("projectBody").innerHTML = htmlToBeDisplayed;
@@ -255,7 +255,3 @@ function connectionError(response) {
 
 return tableHTML;
 }*/
-
-
-
-

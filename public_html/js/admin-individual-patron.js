@@ -5,6 +5,8 @@ function runOnLoad() {
     getPatronDetail();
     getTransactionHistory();
 
+    getRefundHistory();
+
 }
 
 function populateNameFields(email, name){
@@ -38,7 +40,7 @@ function getPatronDetail(){
   nameOfPatron = dbResponse.name;
   populateNameFields(email, nameOfPatron);*/
 
-  
+
   $.post({
         url: "/getUser",
         data: JSON.stringify({
@@ -85,7 +87,7 @@ function editProfile(){
               var dbResponse = JSON.parse(data);
               if(dbResponse.success){
                 alert("Name changed");
-                window.location.href = "/secure/admin-individual-patron.html?" + encodeURIComponent("email=" + email); 
+                window.location.href = "/secure/admin-individual-patron.html?" + encodeURIComponent("email=" + email);
               } else {
                 alert("DB ERROR");
               }
@@ -98,9 +100,43 @@ function editProfile(){
 
 }
 
+function getRefundHistory(){
+  var email = getUrlParameters("email", "", true);
+
+  $.post({
+      url: "/getUserRefundHistory",
+      data: JSON.stringify({
+          email: email
+      }),
+      success: function (data, response) {
+          if (response == "success") {
+              displayRefundTable(data);
+          } else {
+              connectionError(response);
+          }
+      },
+      contentType: "application/json"
+  });
+}
+
+function displayRefundTable(data){
+  var serverResponse = JSON.parse(data);
+
+  if(serverResponse.success == true){
+    var refunds = serverResponse.refunds;
+
+    var htmlToBeDisplayed = makeTable(refunds);
+
+    document.getElementById("refundBody").innerHTML = htmlToBeDisplayed;
+  }
+  else{
+    console.log(serverResponse.errorMessage);
+  }
+}
+
 function getTransactionHistory() {
     var email = getUrlParameters("email", "", true);
-    /*var data = { 
+    /*var data = {
 
     success: true,
     errorMessage: "error lor",
@@ -129,7 +165,7 @@ function getTransactionHistory() {
 
 
   displayDontatedTable(JSON.stringify(data));*/
-  
+
   $.post({
       url: "/getUserTransactionHistory",
       data: JSON.stringify({
@@ -165,26 +201,26 @@ function displayDontatedTable(data){
 }
 
 function makeTable(transactions){
-  
+
   if(transactions.length == 0){
-    displayNoData();
+    return displayNoData();
   } else {
     var entireHTML = "";
     var patrontablehead = `<hr>
     <table class="table">
     <thead>
     <tr>
-      <th>#</th>
+      <th>ID</th>
       <th>Project Name</th>
       <th>Project Owner</th>
-      <th>Donated Date</th>
-      <th>Donated Amount</th>
+      <th>Date</th>
+      <th>Amount</th>
       <th>Action</th>
     </tr>
     </thead>
     <tbody>`;
     for (var i = 0; i < transactions.length; i++) {
-      var html = listDontatedProjects(transactions[i], i+1);
+      var html = listDontatedProjects(transactions[i]);
 
       entireHTML = entireHTML + html;
     }
@@ -194,34 +230,114 @@ function makeTable(transactions){
   return entireHTML;
 }
 
-function listDontatedProjects(transactions, num){
+function listDontatedProjects(transactions){
+
+  var date = new Date(transactions.time);
+  var year = date.getFullYear();
+  var month = date.getMonth()+1;
+  var dateString = date.getDate();
+  var hour = date.getHours();
+  var minute = date.getMinutes();
 
   var tableHTML =`
     <tr>
-      <th scope="row">` + num + `</th>
-      <td>` + transactions.title + `</td>
-      <td>`+ transactions.email +`</td>
-      <td>` + transactions.date + `</td>
+      <th scope="row">` + transactions.id + `</th>
+      <td><a href="#" onclick="goToProject('` + transactions.title + `', '` + transactions.email + `')">` + transactions.title + `</a></td>
+      <td><a href="#" onclick="goToEntreProfile('` + transactions.email + `')">` + transactions.email + `</a></td>
+      <td>` + dateString + `/` + month + `/` + year + `&nbsp;` + addZero(hour) + `:` + addZero(minute) + `</td>
       <td>` + transactions.amount + `</td>`
-      if(transactions.amount < 0){
-        tableHTML = tableHTML + `</tr>`;
+      if(transactions.isRefundable == true){
+        tableHTML = tableHTML + `<td><button type="button" class="btn btn-info btn-sm" onclick="refund('`+ transactions.id +`')">Refund</button></td></tr>`;
+
       } else {
-        //NEED TO PUT TRANSACTION BETWEEN REFUND
-        tableHTML = tableHTML + `<td><button type="button" onclick="refund()">Refund</button></td></tr>`;
+
+        tableHTML = tableHTML + `<td>Refunded</td></tr>`;
       }
 
 
 return tableHTML;
 }
 
-//Function used to refund the user
-function refund(){
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
 
+function goToEntreProfile(email){
+  console.log(email);
+
+  var params = "email=" + email;
+
+  var html = "/secure/admin-entre-profile.html?" + encodeURIComponent(params);
+  console.log(html);
+  console.log(decodeURIComponent(html));
+
+  window.location.href = html;
+}
+
+function goToProject(title, email) {
+  console.log(title);
+  console.log(email);
+  var params = "title=" + title + "~~~~~email=" + email;
+
+  var html = "/secure/admin-project-detail.html?" + encodeURIComponent(params);
+  console.log(html);
+  console.log(decodeURIComponent(html));
+
+  window.location.href = html;
+}
+
+//Function used to refund the user
+function refund(id){
+
+  $.post({
+      url: "/refund",
+      data: JSON.stringify({
+          id: id
+      }),
+      success: function (data, response) {
+          if (response == "success") {
+              isRefundSuccess(data, id);
+          } else {
+              connectionError(response);
+          }
+      },
+      contentType: "application/json"
+  });
 
 }
 
-function displayNoData(){
+function isRefundSuccess(data, id){
+  var serverResponse = JSON.parse(data);
 
+  if(serverResponse.success == true){
+    alert("You have refunded the donation with transaction id: " + id);
+    var email = getUrlParameters("email", "", true);
+    goBackAdminIndividualPatron(email);
+  }
+  else{
+    alert(serverResponse.errorMessage);
+    console.log(serverResponse.errorMessage);
+  }
+}
+
+function goBackAdminIndividualPatron(email){
+  console.log(email);
+  var params = "email=" + email;
+
+  var html = "/secure/admin-individual-patron.html?" + encodeURIComponent(params);
+  console.log(html);
+  console.log(decodeURIComponent(html));
+
+  window.location.href = html;
+}
+
+function displayNoData(){
+  var html = `<h1> No transaction to display </h1>`;
+
+  return html;
 }
 
 var nameOfPatron = "";
@@ -230,11 +346,11 @@ var nameOfPatron = "";
 
 
 
-//TEMPLATE FOR HOW IT SHOULD LOOK LIKE 
+//TEMPLATE FOR HOW IT SHOULD LOOK LIKE
 /*
 function patronEmail() {
  document.getElementById("email").innerHTML = getEmail();
- 
+
  console.log("Hello world");
 }
 
@@ -249,21 +365,21 @@ function tables(){
 
 function getEmail() {
   //this method needs api to get the email address
-  
+
  var details = '{"name": "Steve Jobs", "email": "steve@gmail.com"}';
  var response = JSON.parse(details);
  var headingHTML = response.email;
-  //filler  
+  //filler
  return headingHTML;
 }
 
 function getName() {
   //this method needs api to get the email address
-  
+
  var details = '{"name": "Steve Jobs", "email": "steve@gmail.com"}';
  var response = JSON.parse(details);
  var headingHTML = response.name;
-  //filler  
+  //filler
  return headingHTML;
 }
 
@@ -307,4 +423,3 @@ var tableToDisplay = `
 
 return tableToDisplay;
 }*/
-

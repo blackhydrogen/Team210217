@@ -9,14 +9,13 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Admin Page</title>
+  <title>Project Transactions</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
   <link href="/css/modern-business.css" rel="stylesheet">
-  <link href="../css/admin.css" rel="stylesheet">
 
   <!-- Custom Fonts -->
   <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -30,10 +29,7 @@
 
 </head>
 
-
-<body>
-
-  <!-- Navigation -->
+<body onload="runOnLoad()">
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -44,8 +40,11 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Let's Fund</a>
+        <a class="navbar-brand" href="admin-dashboard.html">Let's Fund</a>
       </div>
+
+
+
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
@@ -64,68 +63,42 @@
     <!-- /.container -->
   </nav>
 
-  <!--View to change the table the user wishes to pull-->
   <div class="container">
-        <div class="card"></div>
-        <div class="card">
-            <h1 class="title">Choose Table</h1>
-            <form>
-                <div class="button-container">
-                    <button type="button" onclick="getEntreTable()"><span>Entrepreneur</span></button>
-                    <button type="button" onclick="getPatronTable()"><span>Patron</span></button>
-                </div>
-                <div id="projectBody"></div>
-            </form>
-        </div>
-    </div>
-
-  <!-- Page Content -->
-  <div class="container">
-
-    <!-- Page Heading/Breadcrumbs -->
-    <!--
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header">My Projects</h1>
-
+        <h1 class="page-header"></h1>
         <ol class="breadcrumb">
-          <li class="active">My Projects</li>
+          <li><a href="admin-dashboard.html">Admin</a></li>
+          <li class="active">Transactions</li>
         </ol>
       </div>
-    </div> -->
-    <!-- /.row -->
-
-    <!-- this is where the js html gets injected -->
-    <!--<div id="projectBody"></div> -->
-
-    <!-- Pagination -->
-    <div class="row text-center">
-      <div class="col-lg-12">
-        <ul class="pagination" id="pageHTML">
-        </ul>
-      </div>
     </div>
-    <!-- /.row -->
-
-    <hr>
-
-    <!-- Footer -->
-    <footer>
-      <div class="row">
-        <div class="col-lg-12">
-          <p>Copyright &copy; Your Website 2014</p>
-        </div>
-      </div>
-    </footer>
-
   </div>
-  <!-- /.container -->
 
-  <!-- jQuery -->
+  <div class="container">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Donor</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody class="table-body">
+          <tr>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <script src="/js/jquery.js"></script>
 
   <!-- personal js -->
-  <script src="/js/admin-dashboard.js"></script>
+  <script src="/js/admin-entre-project-transaction.js"></script>
   <script src="/js/utils.js"></script>
 
   <!-- Bootstrap Core JavaScript -->
