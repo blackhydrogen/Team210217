@@ -16,12 +16,15 @@ lfDatabase.setup("postgres://letsfund:gofundyourself@localhost:5432/letsfund");
 lfSession.setup(app);
 lfRoutes.setup(app);
 
-app.get("*", function(req, res, next) {
-	console.log(req.session);
-	next();
+app.get("/secure/*", function(req, res, next) {
+	if(req.session.type)
+		next();
+	else {
+		res.redirect("/account_page/login.html");
+	}
 });
 
-app.get("/test", function(req, res) {
+// app.get("/test", function(req, res) {
 	// console.log("HI1");
 	// lfDatabase.executeTransaction([
 		// "SELECT * FROM account WHERE email=$1", ["ian@gmail.com"],
@@ -33,7 +36,7 @@ app.get("/test", function(req, res) {
 		// console.log("HI3");
 	// });
 	// res.send("200 ok").end();
-});
+// });
 
 app.use(express.static(__dirname + "/public_html"));
 

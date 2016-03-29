@@ -1,13 +1,22 @@
 function runOnLoad() {
-  createSearchBar();
   getUserDetails();
 }
 
 function getUserDetails() {
+  // var data = {
+  //   success: true,
+  //   name: "Hello Company",
+  //   address: "ABC Road",
+  //   website: "Helloworld.com",
+  //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  // };
+  //
+  // displayUserDetails(JSON.stringify(data));
+  var email = getUrlParameters("email", "", true);
   $.post({
     url: "/getUser",
     data: JSON.stringify({
-
+      email: email
     }),
     success: function (data, response) {
       if(response == "success") {
@@ -22,7 +31,6 @@ function getUserDetails() {
 
 function displayUserDetails(data) {
   var response = JSON.parse(data);
-
   if(response.success == false) {
     userDetailError(response.errorMessage);
   } else {
@@ -31,9 +39,6 @@ function displayUserDetails(data) {
 }
 
 function constructHTML(response) {
-  $(".pf-oldpass")
-  .empty()
-  .append("Old Password (if you want to change your password): ", createPasswordField("oldPassword"));
 
   $(".pf-newpass")
   .empty()
@@ -70,10 +75,11 @@ function createTextInput(holder, id) {
 }
 
 function submitChanges() {
+  var email = getUrlParameters("email", "", true);  
   if(hasPassword() || hasEmptyPasswords()) {
     if(isNewPasswordMatch()) {
       var editData = {
-        oldPassword: $("#oldPassword").val(),
+        email: email,
         newPassword: $("#newPassword").val(),
         name: $("#companyName").val(),
         address: $("#address").val(),
@@ -93,15 +99,15 @@ function submitChanges() {
         },
         contentType: "application/json"
       });
+
     } else {
       alert("The new password you've entered does not match with the confirmation password.");
-      $("#oldPassword").val("");
+      
       $("#newPassword").val("");
       $("#cfmPassword").val("");
     }
   } else {
     alert("If you're intending to change your password, please complete the password fields.");
-    $("#oldPassword").val("");
     $("#newPassword").val("");
     $("#cfmPassword").val("");
   }
@@ -116,11 +122,10 @@ function isNewPasswordMatch() {
 }
 
 function hasEmptyPasswords() {
-  var oldPassword = $("#oldPassword").val();
   var newPassword = $("#newPassword").val();
   var cfmPassword = $("#cfmPassword").val();
 
-  if(oldPassword == "" && newPassword == "" && cfmPassword == "") {
+  if(newPassword == "" && cfmPassword == "") {
     return true;
   }
 
@@ -128,11 +133,10 @@ function hasEmptyPasswords() {
 }
 
 function hasPassword() {
-  var oldPassword = $("#oldPassword").val();
   var newPassword = $("#newPassword").val();
   var cfmPassword = $("#cfmPassword").val();
 
-  if(oldPassword != "" && newPassword != "" && cfmPassword != "") {
+  if(newPassword != "" && cfmPassword != "") {
     return true;
   }
 
@@ -141,12 +145,13 @@ function hasPassword() {
 
 function checkEditSuccess(data) {
   var response = JSON.parse(data);
-
+  var email = getUrlParameters("email", "", true);
+  var params = "email=" + email;
   if(response.success) {
-    window.location.href = "/secure/entrepreneur-profile.html";
+    window.location.href = "/secure/admin-individual-entre.html?" + encodeURIComponent(params);
   } else {
     alert(response.errorMessage);
-    window.location.href = "/secure/edit-profile-entre.html";
+    window.location.href = "/secure/admin-edit-profile-entre.html?" + encodeURIComponent(params);
   }
 }
 
