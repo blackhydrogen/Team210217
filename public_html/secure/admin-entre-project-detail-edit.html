@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Project Details</title>
+  <title>Edit Project</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -42,34 +42,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/secure/entrepreneur-dashboard.html">Let's Fund</a>
+        <a class="navbar-brand" href="admin-dashboard.html">Let's Fund</a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-          <li class="search-bar">
-            ...
-          </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="entrepreneur-dashboard.html">Dashboard</a>
-              </li>
-              <li>
-                <a href="entrepreneur-new-project.html">New Project</a>
-              </li>
-            </ul>
-          </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li>
-                <a href="entrepreneur-profile.html">My Profile</a>
-              </li>
-              <li>
-                <a href="edit-profile-entre.html">Edit Profile</a>
-              </li>
               <li>
                 <a href="#" onclick="logout()">Logout</a>
               </li>
@@ -88,11 +68,12 @@
     <!-- Page Heading/Breadcrumbs -->
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"></h1>
+        <h1 class="page-header">Edit Project Details
+        </h1>
         <ol class="breadcrumb">
-          <li><a href="entrepreneur-dashboard.html">My Projects</a>
-          </li>
-          <li class="active"><span class="lf-title">Loading...</span></li>
+          <!--<li><a href="entrepreneur-dashboard.html">My Projects</a>
+          </li>-->
+          <li class="active"><span class="lf-title-noedit">Loading...</span></li>
         </ol>
       </div>
     </div>
@@ -134,74 +115,44 @@
       </div>
 
       <div class="col-md-4">
+        <h3><span class="lf-title">Loading...</span></h3>
         <p><span class="lf-description">Loading...</span></p>
         <h3>Project Details</h3>
         <ul class="lf-details">
           <li>Loading...</li>
         </ul>
+        <input class="btn btn-primary" type="button" value="Save" onclick="saveDetails()">
       </div>
-      <button type="button" class="btn btn-primary" onclick="loadEditPage()">Edit</button>
-      <button type="button" class="btn btn-primary" onclick="loadTransactionHistory()">Donation History</button>
+
     </div>
     <!-- /.row -->
 
     <!-- Related Projects Row -->
-    <!-- <div class="row">
+    <!-- /.row -->
 
-    <div class="col-lg-12">
-    <h3 class="page-header">Related Projects</h3>
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright &copy; Your Website 2014</p>
+        </div>
+      </div>
+    </footer>
+
   </div>
+  <!-- /.container -->
 
-  <div class="col-sm-3 col-xs-6">
-  <a href="#">
-  <img class="img-responsive img-hover img-related" src="http://placehold.it/500x300" alt="">
-</a>
-</div>
+  <!-- jQuery -->
+  <script src="/js/jquery.js"></script>
 
-<div class="col-sm-3 col-xs-6">
-<a href="#">
-<img class="img-responsive img-hover img-related" src="http://placehold.it/500x300" alt="">
-</a>
-</div>
+  <!--script for this page-->
+  <script src="/js/admin-entre-project-detail-edit.js"></script>
+  <script src="/js/utils.js"></script>
 
-<div class="col-sm-3 col-xs-6">
-<a href="#">
-<img class="img-responsive img-hover img-related" src="http://placehold.it/500x300" alt="">
-</a>
-</div>
-
-<div class="col-sm-3 col-xs-6">
-<a href="#">
-<img class="img-responsive img-hover img-related" src="http://placehold.it/500x300" alt="">
-</a>
-</div>
-
-</div> -->
-<!-- /.row -->
-
-<hr>
-
-<!-- Footer -->
-<footer>
-  <div class="row">
-    <div class="col-lg-12">
-      <p>Copyright &copy; Your Website 2014</p>
-    </div>
-  </div>
-</footer>
-
-</div>
-<!-- /.container -->
-
-<!-- jQuery -->
-<script src="/js/jquery.js"></script>
-
-<!--script for this page-->
-<script src="/js/entre-project-detail.js"></script>
-<script src="/js/utils.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="/js/bootstrap.min.js"></script>
 
 </body>
 

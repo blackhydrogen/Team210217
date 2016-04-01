@@ -1,5 +1,4 @@
 function runOnLoad() {
-  createSearchBar();
   getProjectDetails();
 }
 
@@ -53,7 +52,7 @@ function displayProject(data) {
 			<li>Raised: ${response.raised}</li>
 			<li>Start Time: ${new Date(response.start).toLocaleString()}</li>
 			<li>End Time: ${new Date(response.end).toLocaleString()}</li>
-			<li>Tags: `+ createTags(response.tags) + `</li>
+			<li>Tags: `+ response.tags + `</li>
 		`)
 	}
 	else {
@@ -61,25 +60,10 @@ function displayProject(data) {
 	}
 }
 
-function createTags(tags) {
-  var html = "";
-  var arrayTags = tags.trim();
-  arrayTags = arrayTags.split(",");
-
-  for (var i = 0; i < arrayTags.length; i++) {
-    if(i != 0) {
-      html = html + ", "
-    }
-    html = html + arrayTags[i];
-  }
-
-  return html;
-}
-
 function loadTransactionHistory() {
-  window.location.href = "/secure/entre-project-transaction.html" + window.location.search;
+  window.location.href = "/secure/admin-entre-project-transaction.html" + window.location.search;
 }
 
 function loadEditPage() {
-	window.location.href = "/secure/entre-project-detail-edit.html" + window.location.search;
+	window.location.href = "/secure/admin-entre-project-detail-edit.html" + window.location.search;
 }

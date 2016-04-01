@@ -9,13 +9,14 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>My Projects</title>
+  <title>Admin Page</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
   <link href="/css/modern-business.css" rel="stylesheet">
+  <link href="../css/admin.css" rel="stylesheet">
 
   <!-- Custom Fonts -->
   <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -30,7 +31,7 @@
 </head>
 
 
-<body onload="runOnLoad()">
+<body>
 
   <!-- Navigation -->
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -48,30 +49,9 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-          <li class="search-bar">
-            ...
-          </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="entrepreneur-dashboard.html">Dashboard</a>
-              </li>
-              <li>
-                <a href="entrepreneur-new-project.html">New Project</a>
-              </li>
-            </ul>
-          </li>
-
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li>
-                <a href="entrepreneur-profile.html">My Profile</a>
-              </li>
-              <li>
-                <a href="edit-profile-entre.html">Edit Profile</a>
-              </li>
               <li>
                 <a href="#" onclick="logout()">Logout</a>
               </li>
@@ -84,11 +64,26 @@
     <!-- /.container -->
   </nav>
 
+  <!--View to change the table the user wishes to pull-->
+  <div class="container">
+        <div class="card"></div>
+        <div class="card">
+            <h1 class="title">Choose Table</h1>
+            <form>
+                <div class="button-container">
+                    <button type="button" onclick="getEntreTable()"><span>Entrepreneur</span></button>
+                    <button type="button" onclick="getPatronTable()"><span>Patron</span></button>
+                </div>
+                <div id="projectBody"></div>
+            </form>
+        </div>
+    </div>
+
   <!-- Page Content -->
   <div class="container">
 
     <!-- Page Heading/Breadcrumbs -->
-
+    <!--
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header">My Projects</h1>
@@ -97,11 +92,11 @@
           <li class="active">My Projects</li>
         </ol>
       </div>
-    </div>
+    </div> -->
     <!-- /.row -->
 
     <!-- this is where the js html gets injected -->
-    <div id="projectBody"></div>
+    <!--<div id="projectBody"></div> -->
 
     <!-- Pagination -->
     <div class="row text-center">
@@ -130,7 +125,7 @@
   <script src="/js/jquery.js"></script>
 
   <!-- personal js -->
-  <script src="/js/entrepreneur-dashboard.js"></script>
+  <script src="/js/admin-dashboard.js"></script>
   <script src="/js/utils.js"></script>
 
   <!-- Bootstrap Core JavaScript -->

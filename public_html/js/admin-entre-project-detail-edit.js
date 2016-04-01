@@ -1,5 +1,4 @@
 function runOnLoad() {
-  createSearchBar();
   getProjectDetails();
 }
 
@@ -44,7 +43,7 @@ function displayProject(data) {
 			.append(
 				$("<li>").append("Goal: ", createTextInput(response.goal)),
 				$("<li>").append(`Raised: ${response.raised}`),
-				$("<li>").append("Start Date: ", createDateInput(response.start, response.end, "start")),
+        $("<li>").append("Start Date: ", createDateInput(response.start, response.end, "start")),
 				$("<li>").append("End Date: ", createDateInput(response.start, response.end, "end")),
 				$("<li>").append("Tags: ", createTextInput(response.tags))
 			);
@@ -107,7 +106,7 @@ function saveDetails() {
 		title: $(".lf-title input").val(),
 		description: $(".lf-description textarea").val(),
 		goal: Number($(".lf-details input:eq(0)").val()),
-		start: new Date($("#startDate").val()),
+    start: new Date($("#startDate").val()),
 		end: new Date($("#endDate").val()),
 		tags: $(".lf-details input:eq(3)").val()
 	}
@@ -135,7 +134,7 @@ function handleSaveDetailsResponse(data) {
 			+ "~~~~~email="
 			+ getUrlParameters("email", "", true);
 
-		window.location.href = "/secure/entre-project-detail.html?" + encodeURIComponent(params);
+		window.location.href = "/secure/admin-project-detail.html?" + encodeURIComponent(params);
 	}
 	else {
 		alert(response.errorMessage);

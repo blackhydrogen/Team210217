@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>My Projects</title>
+  <title>Project Transactions</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -29,10 +29,7 @@
 
 </head>
 
-
 <body onload="runOnLoad()">
-
-  <!-- Navigation -->
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -43,14 +40,18 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Let's Fund</a>
+        <a class="navbar-brand" href="entrepreneur-dashboard.html">Let's Fund</a>
       </div>
+
+
+
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
           <li class="search-bar">
             ...
           </li>
+
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects<b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -84,53 +85,43 @@
     <!-- /.container -->
   </nav>
 
-  <!-- Page Content -->
   <div class="container">
-
-    <!-- Page Heading/Breadcrumbs -->
-
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header">My Projects</h1>
-
+        <h1 class="page-header"></h1>
         <ol class="breadcrumb">
-          <li class="active">My Projects</li>
+          <li><a href="entrepreneur-dashboard.html">My Projects</a></li>
+          <li><a href="#" onclick="backToProject()"><span class="lf-title">...</span></a></li>
+          <li class="active">Transactions</li>
         </ol>
       </div>
     </div>
-    <!-- /.row -->
-
-    <!-- this is where the js html gets injected -->
-    <div id="projectBody"></div>
-
-    <!-- Pagination -->
-    <div class="row text-center">
-      <div class="col-lg-12">
-        <ul class="pagination" id="pageHTML">
-        </ul>
-      </div>
-    </div>
-    <!-- /.row -->
-
-    <hr>
-
-    <!-- Footer -->
-    <footer>
-      <div class="row">
-        <div class="col-lg-12">
-          <p>Copyright &copy; Your Website 2014</p>
-        </div>
-      </div>
-    </footer>
-
   </div>
-  <!-- /.container -->
 
-  <!-- jQuery -->
+  <div class="container">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Donor</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody class="table-body">
+          <tr>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <script src="/js/jquery.js"></script>
 
   <!-- personal js -->
-  <script src="/js/entrepreneur-dashboard.js"></script>
+  <script src="/js/entre-project-transaction.js"></script>
   <script src="/js/utils.js"></script>
 
   <!-- Bootstrap Core JavaScript -->

@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>My Projects</title>
+  <title>Search</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -43,39 +43,13 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Let's Fund</a>
+        <a class="navbar-brand" href="#" onclick="redirectToRespectiveHomepage()">Let's Fund</a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" id="navBar">
           <li class="search-bar">
             ...
-          </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="entrepreneur-dashboard.html">Dashboard</a>
-              </li>
-              <li>
-                <a href="entrepreneur-new-project.html">New Project</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="entrepreneur-profile.html">My Profile</a>
-              </li>
-              <li>
-                <a href="edit-profile-entre.html">Edit Profile</a>
-              </li>
-              <li>
-                <a href="#" onclick="logout()">Logout</a>
-              </li>
-            </ul>
           </li>
         </ul>
       </div>
@@ -93,9 +67,9 @@
       <div class="col-lg-12">
         <h1 class="page-header">My Projects</h1>
 
-        <ol class="breadcrumb">
+        <!-- <ol class="breadcrumb">
           <li class="active">My Projects</li>
-        </ol>
+        </ol> -->
       </div>
     </div>
     <!-- /.row -->
@@ -130,7 +104,7 @@
   <script src="/js/jquery.js"></script>
 
   <!-- personal js -->
-  <script src="/js/entrepreneur-dashboard.js"></script>
+  <script src="/js/search-dashboard.js"></script>
   <script src="/js/utils.js"></script>
 
   <!-- Bootstrap Core JavaScript -->

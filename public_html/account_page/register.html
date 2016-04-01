@@ -52,7 +52,7 @@
                         <a href="login.html">Login</a>
                     </li>
                     <li>
-                        <a href="#">Register</a>
+                        <a href="#" onclick="return false;">Register</a>
                     </li>
                 </ul>
             </div>
@@ -65,35 +65,26 @@
         <div class="card"></div>
         <div class="card">
             <h1 class="title">Register</h1>
-            <form>
+            <form onsubmit="submitForm()">
                 <div class="button-container">
-                    <button><span>Entrepreneur</span></button>
-                    <button><span>Patron</span></button>
+                    <input type="submit" style="visibility: hidden;" />
+                    <button type="button" onclick="entreRegistration();"><span>Entrepreneur</span></button>
+                    <button type="button" onclick="patronRegistration();"><span>Patron</span></button>
                 </div>
-                <div class="input-container">
-                    <input type="text" id="Username" required="required" />
-                    <label for="Username">Username</label>
-                    <div class="bar"></div>
-                </div>
-                <div class="input-container">
-                    <input type="password" id="Password" required="required" />
-                    <label for="Password">Password</label>
-                    <div class="bar"></div>
-                </div>
-                <div class="button-container">
-                    <button id="loginButton"><span>Go</span></button>
-                </div>
-                <div class="footer"><a href="#">Forgot your password?</a></div>
+                <div id="registrationForm"></div>
             </form>
         </div>
     </div>
 
 
     <!-- jQuery -->
-    <script src="../js/jquery.js"></script>
+    <script src="/js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <!-- registration page js -->
+    <script src="/js/register.js"></script>
 
     <!-- Script to Activate the Carousel -->
     <script>

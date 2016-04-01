@@ -1,0 +1,94 @@
+<script src="/js/jquery.js"></script>
+
+<script>
+//http://stackoverflow.com/questions/4810841/how-can-i-pretty-print-json-using-javascript
+function syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+
+//var str = syntaxHighlight(JSON.stringify(obj, undefined, 4));
+
+//http://stackoverflow.com/questions/9637517/parsing-relaxed-json-without-eval
+function badToGoodJson(json) {
+	return json.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
+}
+</script>
+
+<style>
+pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+
+textarea {width: 100%; height: 200px;}
+</style>
+
+URL: <input type="text" id="url">
+<br><br>
+
+Request JSON:<br>
+{<br>
+<textarea id="reqjson"></textarea><br>
+}
+<br><br>
+
+<input type="button" value="Submit by POST" id="submit">
+<hr><br>
+
+Response JSON (#<span id="num">0</span>):<br>
+<pre id="resjson">{}</pre>
+
+<script>
+$("#submit").on("click", function() {
+	var reqjson = badToGoodJson("{" + $("#reqjson").val() + "}");
+	try {
+		reqjson = JSON.parse(reqjson);
+	} catch(e) {
+		alert("JSON error: " + e);
+		return;
+	}
+	reqjson = JSON.stringify(reqjson);
+
+	$.post({
+		url: "/" + $("#url").val(),
+		data: reqjson,
+		success: function(data, response) {
+			if(response == "success") {
+				var responseObject = JSON.parse(data);
+				
+				$("#resjson").html(
+					syntaxHighlight(
+						JSON.stringify(responseObject, undefined, 4)
+					)
+				);
+				
+				$("#num").html(parseInt($("#num").html()) + 1);
+			}
+			else {
+				alert("Error! Check log.");
+				console.log(data, response);
+			}
+		},
+		contentType: "application/json"
+	});
+
+});
+
+</script>
