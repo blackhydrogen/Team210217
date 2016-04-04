@@ -62,14 +62,27 @@ function displayTransactionHistory(data, title, email) {
 
 function createRowsHTML(transactions) {
   var html = "";
+  var counter = 1;
 
   for(var i = 0; i < transactions.length; i++) {
-    html = html + `<tr>`;
-    html = html + `<td>` + (i + 1) + `</td>`;
-    html = html + `<td><a href="#" onclick="goToUser('` + transactions[i].email + `')">` + transactions[i].email + `</a></td>`;
-    html = html + `<td>` + transactions[i].amount + `</td>`;
-    html = html + `<td>` + new Date(transactions[i].time) + `</td>`;
-    html = html + "</tr>";
+    if(transactions[i].isRefundable) {
+      var date = new Date(transactions[i].time);
+      var mth = date.getMonth()+1;
+      var dateString = date.getDate();
+      var hour = ("0" + date.getHours()).slice(-2);
+      var minute = ("0" + date.getMinutes()).slice(-2);
+
+      var timeStr = dateString + "/" + mth + "/" + date.getFullYear() + ", " + hour + ":" + minute;
+
+      html = html + `<tr>`;
+      html = html + `<td>` + counter + `</td>`;
+      html = html + `<td><a href="#" onclick="goToUser('` + transactions[i].email + `')">` + transactions[i].email + `</a></td>`;
+      html = html + `<td>` + transactions[i].amount + `</td>`;
+      html = html + `<td>` + timeStr + `</td>`;
+      html = html + "</tr>";
+
+      counter += 1;
+    }
   }
 
   return html;

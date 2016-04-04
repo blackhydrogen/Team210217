@@ -54,6 +54,7 @@ function displayProject(data) {
 			<li>Start Time: ${new Date(response.start).toLocaleString()}</li>
 			<li>End Time: ${new Date(response.end).toLocaleString()}</li>
 			<li>Tags: ` + response.tags + `</li>
+      <li>Owner: ` + response.name + `</li>
 		`)
 	}
 	else {

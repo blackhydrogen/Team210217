@@ -65,7 +65,7 @@ function createRowsHTML(transactions) {
 
   for(var i = 0; i < transactions.length; i++) {
     html = html + `<tr>`;
-    html = html + `<td>` + (i + 1) + `</td>`;
+    html = html + `<td>` + transactions[i].id + `</td>`;
     html = html + `<td>` + transactions[i].email + `</td>`;
     html = html + `<td>` + transactions[i].amount + `</td>`;
 
@@ -78,6 +78,12 @@ function createRowsHTML(transactions) {
     var minute = date.getMinutes();
 
     html = html + `<td>` + dateString + `/` + month + `/` + year + `&nbsp;` + addZero(hour) + `:` + addZero(minute) + `</td>`;
+
+    if(transactions[i].isRefundable) {
+      html = html + `<td><button class="btn btn-info btn-sm" onclick="refund('`+ transactions[i].id + `')">Refund</button></td>` ;
+    } else {
+      html = html + `<td>Refunded</td>`
+    }
     html = html + "</tr>";
   }
 
@@ -85,10 +91,10 @@ function createRowsHTML(transactions) {
 }
 
 function addZero(i) {
-    if (i < 10) {
-        i = "0" + i;
-    }
-    return i;
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
 }
 
 function goToUser(email) {
@@ -98,4 +104,34 @@ function goToUser(email) {
 
 function connectionError(errorMessage) {
   console.log(errorMessage);
+}
+
+function refund(id) {
+  $.post({
+    url: "/refund",
+    data: JSON.stringify({
+      id: id
+    }),
+    success: function (data, response) {
+      if (response == "success") {
+        isRefundSuccess(data, id);
+      } else {
+        connectionError(response);
+      }
+    },
+    contentType: "application/json"
+  });
+}
+
+function isRefundSuccess(data, id) {
+  var serverResponse = JSON.parse(data);
+
+  if(serverResponse.success){
+    alert("You have refunded the donation with transaction ID: " + id);
+    window.location.href = "/secure/admin-entre-project-transaction.html" + window.location.search;
+  }
+  else{
+    alert(serverResponse.errorMessage);
+    console.log(serverResponse.errorMessage);
+  }
 }
