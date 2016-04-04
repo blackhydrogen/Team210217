@@ -51,7 +51,7 @@ function getEntreDetail(){
   var dbResponse = JSON.parse(JSON.stringify(data));
   nameOfEntre = dbResponse.name;
   populateNameFields(email, nameOfEntre);*/
-  
+
   $.post({
         url: "/getUser",
         data: JSON.stringify({
@@ -110,7 +110,7 @@ function getEntreProjects(pageNumber) {
        }
      ]
    }
-  
+
   displayProjects(JSON.stringify(data));*/
 
   $.post({
@@ -141,7 +141,7 @@ function displayProjects(data) {
     var currentPage = serverResponse.currentPage;
     var totalPage = serverResponse.totalPage;
     var projects = serverResponse.projects;
-    
+
 
     if(projects.length != 0) {
       var htmlToBeDisplayed = formatHtml(projects);
@@ -259,7 +259,7 @@ function goToEditProfile(){
 
 }
 
-function goToTransactionHistory(email, title) {
+function goToTransactionHistory(title, email) {
   var params = "title=" + title + "~~~~~email=" + email;
   //need to implement this page for the admin to entre
   window.location.href = "/secure/admin-entre-project-transaction.html?" + encodeURIComponent(params);
@@ -276,7 +276,7 @@ function goToProject(title, email) {
 var nameOfEntre = "";
 
 /*function makeTable(transactions){
-  
+
   if(transactions.length == 0){
     displayNoData();
   } else {
@@ -341,11 +341,11 @@ function displayNoData(){
 
 
 
-//TEMPLATE FOR HOW IT SHOULD LOOK LIKE 
+//TEMPLATE FOR HOW IT SHOULD LOOK LIKE
 /*
 function patronEmail() {
  document.getElementById("email").innerHTML = getEmail();
- 
+
  console.log("Hello world");
 }
 
@@ -360,21 +360,21 @@ function tables(){
 
 function getEmail() {
   //this method needs api to get the email address
-  
+
  var details = '{"name": "Steve Jobs", "email": "steve@gmail.com"}';
  var response = JSON.parse(details);
  var headingHTML = response.email;
-  //filler  
+  //filler
  return headingHTML;
 }
 
 function getName() {
   //this method needs api to get the email address
-  
+
  var details = '{"name": "Steve Jobs", "email": "steve@gmail.com"}';
  var response = JSON.parse(details);
  var headingHTML = response.name;
-  //filler  
+  //filler
  return headingHTML;
 }
 
@@ -418,4 +418,3 @@ var tableToDisplay = `
 
 return tableToDisplay;
 }*/
-
